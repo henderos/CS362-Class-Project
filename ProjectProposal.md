@@ -53,7 +53,7 @@ The people who will be using our web app are people who want to see all their fi
 
 ### <ins>Use Cases</ins>
 
-**<ins>Subscription Tracking</ins>**:\
+**<ins>Use Case 1: Subscription Tracking</ins>**:\
 **Actors**: User, System\
 **Triggers**: User navigates to the “Subscriptions” section of the app.\
 **Preconditions**: User has linked financial accounts, and transaction data is available.\
@@ -63,9 +63,41 @@ System categorizes these transactions and flags underused subscriptions. User re
 **Extensions/Variations**: User can manually add subscriptions. User can flag a subscription as “not recurring.”\
 **Exceptions**: Errors in identifying recurring transactions. Incomplete transaction data.
 
+**<ins>Use Case 2: Budget Setting</ins>**:\
+**Actors**: User, System\
+**Triggers**: User navigates to the “Budgeting Tool” section of the app.\
+**Preconditions**: User has linked financial accounts and user has access to spending categories.\
+**Postconditions**: The system stores the user’s budget for each selected category.\
+**List of Steps**: User selects “Budgeting Tool”. User selects a spending category. User enters budget amount.\
+**Extensions/Variations**: If user is editing an existing budget\
+**Exceptions**: If the budget amount is too small/large
 
+**<ins>Use Case 3: Viewing Financial Data</ins>**:\
+**Actors**: User, System\
+**Triggers**: User logs into the app\
+**Preconditions**: User has linked financial accounts.\
+**Postconditions**: The user sees an overview of recent transactions, monthly spending, and account balances\
+**List of Steps**: User logs in. System retrieves financial data. Dashboard shows financial information.\
+**Extensions/Variations**: User can change between light and dark mode\
+**Exceptions**: If the system can’t connect to the bank account
 
+**<ins>Use Case 4: Receiving Budget Alerts</ins>**:\
+**Actors**: User, System\
+**Triggers**: User is almost over budget for category\
+**Preconditions**: The user has linked financial accounts, the user has set budgets for categories and the user has set alert preference (email, through app, etc.)\
+**Postconditions**: The system notifies the user through an alert\
+**List of Steps**: The user spends money in tracked category. The system calculates total spending in category. The system identifies that user is close to their set budget. The system sends an alert to the user.\
+**Extensions/Variations**: The alert preference is changed\
+**Exceptions**: Alert fails to send
 
+**<ins>Use Case 5: Generating Spending Reports</ins>**:\
+**Actors**: User, System\
+**Triggers**: User selects “Generate Spending Report” on app\
+**Preconditions**: The user has linked financial accounts and financial data is available for time period.\
+**Postconditions**: The system processes and generates a spending report for selected time period\
+**List of Steps**: The user selects “Generate Spending Report”. The user selects a time period for report. The system processes and generates a spending report.\
+**Extensions/Variations**: The user wants to export report as a different file type\
+**Exceptions**: Insufficient data for selected time period
 ### <ins>Non-functional Requirements</ins>
 
 **Scalability**: The system should handle up to 10,000 concurrent users without performance degradation. This includes managing API calls to Plaid and retrieving data from the MySQL database efficiently.
