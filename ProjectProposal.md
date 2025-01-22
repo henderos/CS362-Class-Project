@@ -1,10 +1,10 @@
 ## Team info
 
-### <ins>Members</ins>
+### <ins>Team Info</ins>
 
 - America Pacheco: Front-End Developer (HTML, CSS, UI design)
 - Bailey Bounnam: Back-End Developer (Node.js, Express, API integration)
-- Ross Henderson: Team Lead and GitHub Manager (coordinate tasks, oversee GitHub repository)
+- Ross Henderson: Back-End Developer (Feature implementation and functionality)
 - Brian Fang: Database Manager (MySQL design, secure storage of financial data)
 - Bryan Partida: API Specialist (Plaid API integration, financial data processing)
 
@@ -39,7 +39,7 @@ This project will help users to manage and keep track of their personal finances
 
 ### <ins>Current Practice</ins>
 
-Today, people commonly use spreadsheets, individual banking apps, or third-party apps to track their finances. These methods are often not automated, or if you have accounts in different banks, then you have to individually log into each banks’ account. With our web app, you will be able to link every account so that you can see everything in one spot with advanced features such as subscription tracking or personalized savings advice.
+Today, people commonly use spreadsheets, individual banking apps, or third-party apps to track their finances. These methods are often not automated, or if you have accounts in different banks, then you have to individually log into each banks’ account. The features that we will implement are also commonly locked behind some sort of paywall. With our web app, you will be able to link every account so that you can see everything in one spot with advanced features such as subscription tracking or personalized savings advice.
 
 
 ### <ins>Novelty</ins>
@@ -51,11 +51,42 @@ Our finance manager will not only allow users to see their finances, but also wi
 
 The people who will be using our web app are people who want to see all their financial information with a user-friendly interface. If we are successful in our app, our app will show more transparency with how our users' money is being handled. This will help reduce unnecessary expenses by identifying underused subscriptions and help users allocate their income effectively by highlighting spending patterns.
 
+### <ins>Use Cases</ins>
+
+**<ins>Subscription Tracking</ins>**:\
+**Actors**: User, System\
+**Triggers**: User navigates to the “Subscriptions” section of the app.\
+**Preconditions**: User has linked financial accounts, and transaction data is available.\
+**Postconditions**: The system identifies recurring transactions and displays them as subscriptions.\
+**List of Steps**: User selects the “Subscriptions” tab. System retrieves recurring transactions from the linked accounts.
+System categorizes these transactions and flags underused subscriptions. User reviews and optionally adjusts subscription tracking preferences.\
+**Extensions/Variations**: User can manually add subscriptions. User can flag a subscription as “not recurring.”\
+**Exceptions**: Errors in identifying recurring transactions. Incomplete transaction data.
+
+
+
+
+### <ins>Non-functional Requirements</ins>
+
+**Scalability**: The system should handle up to 10,000 concurrent users without performance degradation. This includes managing API calls to Plaid and retrieving data from the MySQL database efficiently.
+
+**Security and Privacy**: User data must be encrypted in transit (HTTPS) and at rest (AES-256). Only authenticated and authorized users can access sensitive financial data.
+
+**Usability**: The web application must be responsive and accessible on desktop devices and as a stretch goal, should also be accessible on mobile.
+
+
+### <ins>External Requirements</ins>
+- The product must validate and handle user input errors gracefully.
+- Deployment must include a public URL accessible to end-users.
+- Comprehensive documentation must be provided, including installation instructions for developers and usage instructions for users.
+- The project scope must align with the team’s resources and timeline.
+
 
 ### <ins>Technical Approach</ins>
 
 Our project will employ a scalable and efficient system architecture. The front end will be built using HTML and CSS, with JavaScript to enhance interactivity and responsiveness. For the back end, we will use Node.js with Express to handle server-side functionality and API routing. 
 Data storage will be managed using MySQL to securely handle user information, while the Plaid API will enable integration with users’ bank accounts for retrieving financial data.
+
 
 
 ### <ins>Risks</ins>
@@ -77,3 +108,15 @@ To mitigate this risk, we will establish clear communication expectations from t
 
 - **AI**: Implement AI suggestions and advice for users.
 - **Mobile Support**: Display content to be seen and used effectively on mobile devices.
+
+### <ins>Timeline</ins>
+**Week 1**: Set up GitHub Repository and initial project structure. (Ross Henderson)\
+**Week 2**: Complete front-end skeleton and basic navigation. (America Pacheco)\
+**Week 3**: Design database schema and set up MySQL database. (Brian Fang)\
+**Week 4**: Integrate Plaid API and finalize HTML. (Bryan Partida, America Pacheco)\
+**Week 5**: Establish basic financial data retrieval. (Bailey Bounnam, Ross Henderson)\
+**Week 6**: Implement budgeting tools. (Bailey Bounnam, Brian Fang)\
+**Week 7**: Implement subscription tracking. (Ross Henderson, Bryan Partida)\
+**Week 8**: Conduct usability testing and refine UI/UX. (Everyone)\
+**Week 9**: Finalize project features and perform end-to-end testing. (Everyone)\
+**Week 10**: Finalize project documentation and deploy the application. (Everyone)
