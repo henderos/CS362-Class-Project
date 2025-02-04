@@ -6,7 +6,7 @@
 - Bailey Bounnam: Back-End Developer (Node.js, Express, API integration)
 - Ross Henderson: Back-End Developer (Feature implementation and functionality)
 - Brian Fang: Database Manager (MySQL design, secure storage of financial data)
-- Bryan Partida: API Specialist (Plaid API integration, financial data processing)
+- Bryan Partida: Front-End Developer (HTML, CSS, UI design)
 
 
 ### <ins>Github Link</ins>
