@@ -2,23 +2,19 @@
 
 ### <ins>Team Info</ins>
 
-- America Pacheco: Front-End Developer (HTML, CSS, UI design)
-- Bailey Bounnam: Back-End Developer (Node.js, Express, API integration)
-- Ross Henderson: Back-End Developer (Feature implementation and functionality)
-- Brian Fang: Database Manager (MySQL design, secure storage of financial data)
-- Bryan Partida: API Specialist (Plaid API integration, financial data processing)
-
+- America Pacheco: Front-End Developer: UI design, HTML, CSS, JavaScript components
+- Bailey Bounnam: Back-End Developer: API integration, authentication
+- Ross Henderson: Back-End Developer: Feature implementation
+- Brian Fang: Database Manager: Schema design, MySQL optimization
+- Bryan Partida: Front-End Developer: JavaScript logic, UI interactivity
 
 ### <ins>Github Link</ins>
 
 https://github.com/henderos/CS362-Class-Project 
 
-
-
 ### <ins>Communication Method</ins>
 
-Our main form of communication will be Discord, where we will establish clear threads for tasks, announcements, and questions. We will try to respond within 17 hours of a message of discord. If no one responds, then politely give a reminder. 
-
+Our main form of communication will be Discord, where we will establish clear threads for tasks, announcements, and questions. We will try to respond within 17 hours of a message on Discord. If no one responds, then politely give a reminder.
 
 ## Product description
 
@@ -26,26 +22,21 @@ Our main form of communication will be Discord, where we will establish clear th
 
 **Personal Finance Analyzer**
 
-
 ### <ins>Abstract</ins>
 
 Personal Finance Analyzer is a web application designed to simplify financial management for users, providing tools to track spending and manage subscriptions. With an intuitive user interface and analytics, it aims to empower users to make informed financial decisions effortlessly.
-
 
 ### <ins>Goal</ins>
 
 This project will help users to manage and keep track of their personal finances, see where their money is going, and make decisions for future spending based on these facts.
 
-
 ### <ins>Current Practice</ins>
 
-Today, people commonly use spreadsheets, individual banking apps, or third-party apps to track their finances. These methods are often not automated, or if you have accounts in different banks, then you have to individually log into each banks’ account. The features that we will implement are also commonly locked behind some sort of paywall. With our web app, you will be able to link every account so that you can see everything in one spot with advanced features such as subscription tracking or personalized savings advice.
-
+Today, people commonly use spreadsheets, individual banking apps, or third-party apps to track their finances. These methods are often not automated, or if you have accounts in different banks, then you have to individually log into each bank’s account. The features that we will implement are also commonly locked behind some sort of paywall. With our web app, you will be able to link every account so that you can see everything in one spot with advanced features such as subscription tracking or personalized savings advice.
 
 ### <ins>Novelty</ins>
 
-Our finance manager will not only allow users to see their finances, but also will tell users where certain “problem areas” may be, allowing them to see where they are likely able to improve.
-
+Our finance manager will not only allow users to see their finances but also will tell users where certain “problem areas” may be, allowing them to see where they are likely able to improve.
 
 ### <ins>Effects</ins>
 
@@ -98,6 +89,7 @@ System categorizes these transactions and flags underused subscriptions. User re
 **List of Steps**: The user selects “Generate Spending Report”. The user selects a time period for report. The system processes and generates a spending report.\
 **Extensions/Variations**: The user wants to export report as a different file type\
 **Exceptions**: Insufficient data for selected time period
+
 ### <ins>Non-functional Requirements</ins>
 
 **Scalability**: The system should handle up to 10,000 concurrent users without performance degradation. This includes managing API calls to Plaid and retrieving data from the MySQL database efficiently.
@@ -106,27 +98,19 @@ System categorizes these transactions and flags underused subscriptions. User re
 
 **Usability**: The web application must be responsive and accessible on desktop devices and as a stretch goal, should also be accessible on mobile.
 
-
 ### <ins>External Requirements</ins>
 - The product must validate and handle user input errors gracefully.
 - Deployment must include a public URL accessible to end-users.
 - Comprehensive documentation must be provided, including installation instructions for developers and usage instructions for users.
 - The project scope must align with the team’s resources and timeline.
 
-
 ### <ins>Technical Approach</ins>
 
-Our project will employ a scalable and efficient system architecture. The front end will be built using HTML and CSS, with JavaScript to enhance interactivity and responsiveness. For the back end, we will use Node.js with Express to handle server-side functionality and API routing. 
-Data storage will be managed using MySQL to securely handle user information, while the Plaid API will enable integration with users’ bank accounts for retrieving financial data.
-
-
+Refer to "Major Software Components"
 
 ### <ins>Risks</ins>
 
-One of the most significant challenges we face is ensuring effective and efficient communication within a large team. Miscommunication or delays in responding to inquiries could lead to misunderstandings, duplicated efforts, or even missed deadlines in some cases. Additionally, with multiple members handling interconnected tasks, it can be challenging to maintain a clear and cohesive understanding of project progress and priorities.
-
-To mitigate this risk, we will establish clear communication expectations from the beginning. As mentioned above, team members will be required to regularly check Discord, our primary communication platform, and respond to messages within 17 hours. Tasks will be clearly assigned and tracked using GitHub Projects to provide transparency and accountability. Regular updates will be shared in designated channels to keep everyone informed of ongoing progress.
-
+Refer to "Risk Assessment" inside the "Process Description"
 
 ### <ins>Major Features</ins>
 
@@ -134,7 +118,6 @@ To mitigate this risk, we will establish clear communication expectations from t
 - **Subscription Tracking**: Identify and track recurring subscriptions, flagging underused services.
 - **Spending Categories**: Provide visual breakdowns of expenses by category (e.g., groceries, rent, entertainment).
 - **Budgeting Tool**: Allow users to set budgets for categories and receive alerts when nearing limits.
-
 
 ### <ins>Stretch Goals</ins>
 
@@ -152,3 +135,167 @@ To mitigate this risk, we will establish clear communication expectations from t
 **Week 8**: Conduct usability testing and refine UI/UX. (Everyone)\
 **Week 9**: Finalize project features and perform end-to-end testing. (Everyone)\
 **Week 10**: Finalize project documentation and deploy the application. (Everyone)
+
+---
+
+## Software Architecture
+
+### Overview
+The Personal Finance Analyzer is a web application designed to help users track and analyze their spending habits, manage subscriptions, and set budgets. The application follows a layered architecture with a Front-End (UI/UX), Back-End (APIs and business logic), and a Database layer for secure financial data storage. We rely on the Plaid API for retrieving financial transactions from various financial institutions.
+
+### Major Software Components
+
+**Front-End (Client)**  
+- **Technologies**: HTML, CSS, JavaScript  
+- **Functionality**:  
+  - Displays user dashboards, budget tools  
+  - Sends requests to the Back-End for data  
+  - Offers interactive visualization  
+
+**Back-End (Server)**  
+- **Technologies**: Node.js, Express  
+- **Functionality**:  
+  - Receives requests from Front-End and processes business logic  
+  - Integrates with Plaid API to retrieve and normalize financial data  
+  - Interacts with the database layer for secure data retrieval and updates  
+
+**Database Layer**:  
+- **Technologies**: MySQL  
+- **Functionality**:  
+  - Stores users, account information, transaction history, budget info  
+  - Ensures data consistency, security, and integrity through relational schema constraints  
+
+**Plaid API**  
+- **Functionality**:  
+  - Provides secure access to a user’s bank account and transactions  
+
+### Interfaces Between Components
+- **Front-End and Back-End**: RESTful API calls.  
+- **Back-End and Database**: MySQL queries.  
+- **Back-End and Plaid API**: Secure API calls for transaction retrieval.  
+
+### Data Storage Details
+- **User Data**: UserID, authentication credentials (hashed), account settings.  
+- **Transactions**: Date, amount, category, merchant.  
+- **Budgets**: Category, allocated amount, actual spending.  
+- **Subscriptions**: Recurring payments identified via transaction patterns.  
+
+### Assumptions
+- Users will link their bank accounts via Plaid.  
+- MySQL is scalable to compensate for user growth.  
+- All sensitive data will be encrypted.  
+
+### Alternative Architectural Decisions  
+**Alternative 1: Using MongoDB Instead of MySQL**  
+- **Pros**: Easier to manage, built-in authentication.  
+- **Cons**: Complex queries can be slower, requires different indexing strategies.  
+
+**Alternative 2: Using GraphQL Instead of REST**  
+- **Pros**: Flexible schema, better scalability for unstructured data.  
+- **Cons**: More complex implementation, potential over-fetching issues.  
+
+---
+
+## Software Design
+
+### Front-End
+- **Dashboard.js**: Displays financial summary.  
+- **Budget.js**: Allows users to set and adjust budgets.  
+- **Transactions.js**: Lists user transactions with filtering.  
+
+### Back-End
+- **server.js**: Initializes Express app.  
+- **transactions.js**: Handles transaction-related API calls.  
+- **plaidService.js**: Fetches data from Plaid.  
+
+### Database Tables
+- **users (id, email, passwordHash, settings)**  
+- **transactions (id, userID, date, amount, category, merchant)**  
+- **budgets (id, userID, category, limit, spent)**  
+
+---
+
+## Coding Guidelines
+
+- **JavaScript (Node.js, Front-End)**: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)  
+- **SQL (MySQL)**: [SQL Style Guide](https://www.sqlstyle.guide/)  
+
+We chose these guidelines because they are widely accepted industry standards, ensuring code readability, maintainability, and consistency across the project. To enforce them, we will do continuous checks each week on the new pushes to the GitHub repo and make sure they follow the guidelines.
+
+---
+
+## Process Description
+
+### Risk Assessment
+1. **API Downtime**  
+   - **Likelihood**: Medium  
+   - **Impact**: High  
+   - **Evidence**: Plaid API limitations  
+   - **Mitigation**: Implement caching, fallback strategies  
+
+2. **Security Breach**  
+   - **Likelihood**: Low  
+   - **Impact**: High  
+   - **Evidence**: Sensitive financial data  
+   - **Mitigation**: Use AES-256 encryption, HTTPS  
+
+3. **Database Performance Issues**  
+   - **Likelihood**: Medium  
+   - **Impact**: Medium  
+   - **Evidence**: High data volume  
+   - **Mitigation**: Indexing, query optimization  
+
+4. **Team Coordination Issues**  
+   - **Likelihood**: Medium  
+   - **Impact**: Medium  
+   - **Evidence**: Remote team, different schedules  
+   - **Mitigation**: Clear communication  
+
+5. **Feature Integration Conflicts**  
+   - **Likelihood**: Medium  
+   - **Impact**: Medium  
+   - **Evidence**: Multiple developers working on different components  
+   - **Mitigation**: Use feature branches, thorough code reviews, automated integration testing  
+
+### Project Schedule
+- Refer to "Timeline" inside the "Product Description"
+
+### Team Structure
+- Refer to "Team Members" at the top of the page
+
+### Test Plan & Bug Tracking
+- **Unit Testing**: Jest for JavaScript, Mocha for Node.js.  
+- **Integration Testing**: Postman for API validation.  
+- **Usability Testing**: User feedback sessions.  
+- **Bug Tracking**: GitHub Issues.
+
+### Documentation Plan (User Guide)
+1. **Introduction**  
+   - Overview of the Personal Finance Analyzer.  
+   - Key features: Dashboard, Budgeting, Subscription Tracking, Spending Reports.  
+   - How it helps users manage their finances.  
+
+2. **Getting Started**  
+   - System Requirements: Browser compatibility, internet connection.  
+   - Account Creation: Signing up, logging in, password recovery.  
+   - Linking Bank Accounts: Using Plaid API for secure integration.  
+
+3. **Using the Dashboard**  
+   - Overview of financial summary.  
+   - Navigating different sections (transactions, budgets, reports).  
+   - Customizing the dashboard.  
+
+4. **Managing Transactions**  
+   - Viewing and filtering transactions.  
+   - Categorizing expenses.  
+   - Identifying recurring subscriptions.  
+
+5. **Budgeting Tools**  
+   - Setting up budget categories.  
+   - Tracking spending vs. budget.  
+   - Adjusting budget limits.  
+
+6. **Generating Reports**  
+   - Viewing spending trends.  
+   - Exporting financial summaries.  
+   - Customizing reports.  
