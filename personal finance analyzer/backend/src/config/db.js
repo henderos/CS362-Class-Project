@@ -1,5 +1,4 @@
 const mysql = require("mysql2");
-require("dotenv").config(); // Load environment variables from .env file
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -11,4 +10,4 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-module.exports = pool.promise();  // Allows async/await queries
+module.exports = pool.promise();  // Allows use of async/await
