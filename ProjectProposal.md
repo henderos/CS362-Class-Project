@@ -125,16 +125,16 @@ Refer to "Risk Assessment" inside the "Process Description"
 - **Mobile Support**: Display content to be seen and used effectively on mobile devices.
 
 ### <ins>Timeline</ins>
-**Week 1**: Set up GitHub Repository and initial project structure. (Ross Henderson)\
-**Week 2**: Complete front-end skeleton and basic navigation. (America Pacheco)\
-**Week 3**: Design database schema and set up MySQL database. (Brian Fang)\
-**Week 4**: Integrate Plaid API and finalize HTML. (Bryan Partida, America Pacheco)\
-**Week 5**: Establish basic financial data retrieval. (Bailey Bounnam, Ross Henderson)\
-**Week 6**: Implement budgeting tools. (Bailey Bounnam, Brian Fang)\
-**Week 7**: Implement subscription tracking. (Ross Henderson, Bryan Partida)\
-**Week 8**: Conduct usability testing and refine UI/UX. (Everyone)\
-**Week 9**: Finalize project features and perform end-to-end testing. (Everyone)\
-**Week 10**: Finalize project documentation and deploy the application. (Everyone)
+**Week 1**: Project Initialization: Set up project environment, configure version control, establish coding standards, and set up MySQL databased.\
+**Week 2**: Front-End & Database Design: Design wireframes, create front-end skeleton, and finalize database schema. (Requires project setup from Week 1)\
+**Week 3**: Plaid API Setup: Research, register, and integrate basic Plaid API functionality. (Requires database setup from Week 1)\
+**Week 4**: Data Retrieval & Display: Fetch and display financial data from Plaid API on the front-end. (Requires Plaid API setup and front-end structure from Week 2)\
+**Week 5**: Budgeting Tool Development: Implement budget categories, user input fields, and real-time data storage. (Requires database schema and financial data retrieval)\
+**Week 6**: Subscription Tracking Feature: Identify recurring transactions and display user subscriptions. (Requires financial data retrieval from Week 4)\
+**Week 7**: Spending Report Generation: Implement data visualization for spending trends and financial reports. (Requires data retrieval and categorization from previous weeks)\
+**Week 8**: Usability Testing & UI Refinements: Conduct user testing, fix UI issues, improve accessibility, and refine navigation. (Requires major features to be implemented)\
+**Week 9**: End-to-End Testing & Debugging: Test entire workflow, fix integration issues, and optimize performance. (Requires all major features completed)\
+**Week 10**: Final Deployment & Documentation: Write final project documentation, deploy the application, and conduct final review. (Requires complete system testing)
 
 ---
 
@@ -230,32 +230,45 @@ We chose these guidelines because they are widely accepted industry standards, e
 1. **API Downtime**  
    - **Likelihood**: Medium  
    - **Impact**: High  
-   - **Evidence**: Plaid API limitations  
+   - **Evidence**: Plaid API has occasional service outages
+   - **Steps to Reduce Likelihood/Impact**: Implement error handling and retry mechanisms. Monitor Plaid’s status page and API response logs.
+   - **Plan for Detecting the Problem**: Set up API health checks to monitor response failures. Implement logging for API calls to detect failures early.
    - **Mitigation**: Implement caching, fallback strategies  
 
 2. **Security Breach**  
    - **Likelihood**: Low  
    - **Impact**: High  
-   - **Evidence**: Sensitive financial data  
-   - **Mitigation**: Use AES-256 encryption, HTTPS  
+   - **Evidence**: Financial data is a high-value target for attackers, and API keys or database vulnerabilities could be exploited.
+   - **Steps to Reduce Likelihood/Impact**: Use AES-256 encryption for sensitive data. Implement authentication and authorization best practices.
+   - **Plan for Detecting the Problem**: Set up monitoring for unauthorized access attempts.
+   - **Mitigation**: Immediately revoke compromised credentials and notify affected users and follow a data breach response plan.
 
 3. **Database Performance Issues**  
    - **Likelihood**: Medium  
    - **Impact**: Medium  
-   - **Evidence**: High data volume  
+   - **Evidence**: The project aims to scale up to 10,000 users, and MySQL performance may degrade with large datasets.
+   - **Steps to Reduce Likelihood/Impact**: Optimize queries and indexing strategies.
+   - **Plan for Detecting the Problem**: Monitor query performance and server load.
    - **Mitigation**: Indexing, query optimization  
 
 4. **Team Coordination Issues**  
    - **Likelihood**: Medium  
    - **Impact**: Medium  
-   - **Evidence**: Remote team, different schedules  
+   - **Evidence**: Remote team and different schedules, which may slow down debugging or feature development.
+   - **Steps to Reduce Likelihood/Impact**: Use Discord for real-time communication. Hold weekly progress meetings.
+   - **Plan for Detecting the Problem**: Track missed deadlines and delayed responses in GitHub.
    - **Mitigation**: Clear communication  
 
 5. **Feature Integration Conflicts**  
    - **Likelihood**: Medium  
    - **Impact**: Medium  
-   - **Evidence**: Multiple developers working on different components  
+   - **Evidence**: Multiple developers are working on different components simultaneously, which increases the chances of merge conflicts, API mismatches, or integration bugs.
+   - **Steps to Reduce Likelihood/Impact**: Require thorough code reviews before merging to detect potential conflicts early.
+   - **Plan for Detecting the Problem**: Run automated integration tests after every merge to detect breakages.
    - **Mitigation**: Use feature branches, thorough code reviews, automated integration testing  
+
+
+Since we submitted the Requirements document, we realized that combining different parts of the project might be harder than we first thought. This is because multiple people are working on different features at the same time. To help with this, we are focusing on better communication and doing regular tests to catch problems early. We are also making a clearer schedule to make sure everything fits together smoothly.
 
 ### Project Schedule
 - Refer to "Timeline" inside the "Product Description"
