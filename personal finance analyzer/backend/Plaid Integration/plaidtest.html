@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plaid API Test</title>
+</head>
+<body>
+  <button id="linkButton">Connect Bank Account</button>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script>
+    async function createLinkToken() {
+      const response = await fetch('http://localhost:3000/create_link_token');
+      const data = await response.json();
+      return data.link_token;
+    }
+
+    document.getElementById('linkButton').addEventListener('click', async () => {
+      const linkToken = await createLinkToken();
+      const handler = Plaid.create({
+        token: linkToken,
+        onSuccess: async function(public_token) {
+          console.log('Public Token:', public_token);
+
+          // Exchange public token for access token
+          const exchangeResponse = await fetch('http://localhost:3000/exchange_public_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ public_token })
+          });
+
+          const exchangeData = await exchangeResponse.json();
+          console.log('Access Token:', exchangeData.access_token);
+
+          // Automatically fetch transactions
+          await fetchTransactions(exchangeData.access_token);
+        }
+      });
+      handler.open();
+    });
+
+    async function fetchTransactions(access_token) {
+      const response = await fetch('http://localhost:3000/get_transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_token })
+      });
+
+      const data = await response.json();
+      console.log('Transactions:', data.transactions);
+    }
+  </script>
+</body>
+</html>
