@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Budgeting Tool | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="navbar.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .main-content {
+      padding: 1rem;
+    }
+    .budget-form {
+      max-width: 400px;
+      margin-bottom: 2rem;
+    }
+    .budget-form label {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .budget-form input {
+      margin-bottom: 1rem;
+      width: 100%;
+      padding: 0.5rem;
+    }
+    .budgets-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .budgets-table th, .budgets-table td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+    }
+    .budgets-table th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="subscriptions.html">Subscriptions</a></li>
+        <li><a href="spending-reports.html">Spending reports</a></li>
+        <li><a href="budgeting.html">Budgeting tool</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <a href="feedback.html" class="feedback-link">Send feedback</a>
+      <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Budgeting Tool</h1>
+    <div class="budget-form">
+      <h3>Set a New Budget</h3>
+      <form id="budgetForm">
+        <label for="category">Spending Category</label>
+        <input type="text" id="category" required />
+
+        <label for="amount">Budget Amount</label>
+        <input type="number" id="amount" required />
+
+        <button type="submit">Add/Update Budget</button>
+      </form>
+    </div>
+
+    <h3>Existing Budgets</h3>
+    <table class="budgets-table" id="budgetsTable">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Budget</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadBudgets();
+    });
+
+    const budgetForm = document.getElementById('budgetForm');
+    budgetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('Please log in first!');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const category = document.getElementById('category').value;
+      const amount = document.getElementById('amount').value;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/budgets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ category, amount })
+        });
+        if (!response.ok) throw new Error('Failed to set budget');
+
+        alert('Budget set successfully!');
+        budgetForm.reset();
+        await loadBudgets();
+      } catch (err) {
+        console.error(err);
+        alert('Error setting budget: ' + err.message);
+      }
+    });
+
+    async function loadBudgets() {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/budgets', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error('Failed to load budgets');
+
+        const budgets = await response.json(); // e.g. [{ category, amount }, ...]
+        const tbody = document.getElementById('budgetsTable').querySelector('tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+
+        budgets.forEach(b => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${b.category}</td>
+            <td>$${b.amount}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Error loading budgets');
+      }
+    }
+  </script>
+
+</body>
+</html>
