@@ -23,6 +23,9 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
+// Serve static files from the frontend/public directory
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
+
 // Use Routes
 app.use("/api/users", userRoutes);
 
