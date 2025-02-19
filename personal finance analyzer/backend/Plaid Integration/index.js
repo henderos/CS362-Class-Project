@@ -3,10 +3,12 @@ const express = require('express');
 const fs = require('fs').promises;
 const plaid = require('plaid');
 const cors = require('cors');
+const helmet = require('helmet'); // Added Helmet
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(helmet()); // Use Helmet middleware to set secure HTTP headers
 
 console.log("Client ID:", process.env.PLAID_CLIENT_ID);
 console.log("Secret:", process.env.PLAID_SECRET);
