@@ -400,6 +400,15 @@ We have chosen **GitHub Actions** as our CI service.
 - Runs CI/CD pipelines directly within GitHub, reducing external dependencies.
 - Can be slower compared to dedicated CI tools like CircleCI.
 
+#### CI Service Comparison
+| CI Service         | Pros                                                                                                                       | Cons                                                                                                        |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **GitHub Actions** | - Deep integration with GitHub <br> - Free for open-source projects <br> - Flexible YAML workflow definitions              | - May have slower performance for large projects <br> - Free tier has limited parallelism and minutes       |
+| **Travis CI**      | - Long-standing reputation and proven integration with GitHub <br> - Simple configuration with a straightforward `.travis.yml` file | - Build queues can be slow during peak times <br> - Limited free build minutes for private repositories     |
+| **CircleCI**       | - Excellent parallelism and customizable workflows <br> - Good performance with advanced caching options <br> - Detailed build insights and reporting | - Steeper learning curve for configuration <br> - Pricing may be less competitive for larger teams          |
+
+
+
 ### CI Service Configuration
 1. **Creating the CI Workflow**
    - Add a `.github/workflows/ci.yml` file to the repository:
