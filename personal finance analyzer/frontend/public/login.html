@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connect Bank Account | Personal Finance Analyzer</title>
+  <meta charset="UTF-8" />
+  <title>Log In | Personal Finance Analyzer</title>
   <link rel="stylesheet" href="css/navbar.css" />
   <style>
     body {
@@ -28,15 +26,41 @@
       flex-direction: column;
       padding: 2rem;
     }
-
+    form {
+      max-width: 300px;
+      width: 100%;
+    }
+    form h2 {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
     button {
-      padding: 0.75rem 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
       background-color: #333;
       color: #fff;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 16px;
+    }
+    .footer-text {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .footer-text a {
+      color: #333;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -47,6 +71,7 @@
     <div class="navbar-left">
       <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
       <ul class="nav-links">
+        <li><a href="plaid.html">Link Bank Account</a></li>
         <li><a href="dashboard.html">Home</a></li>
         <li><a href="subscriptions.html">Subscriptions</a></li>
         <li><a href="spending-reports.html">Spending reports</a></li>
@@ -55,59 +80,65 @@
     </div>
     <div class="navbar-right">
       <a href="feedback.html" class="feedback-link">Send feedback</a>
-      <!-- Login/Signup links removed since we are now using bank connection -->
+      <a href="login.html" class="btn-login">Log in</a>
+      <a href="signup.html" class="btn-signup">Sign up</a>
     </div>
   </nav>
 
   <div class="container">
     <div class="left-section">
-      <!-- Background image -->
+      <!-- Left side background image -->
     </div>
     <div class="right-section">
-      <h2>Connect Your Bank Account with Plaid</h2>
-      <button id="linkButton">Plaid Login</button>
+      <form id="loginForm">
+        <h2>Log in</h2>
+        <label for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" required />
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required />
+
+        <button type="submit">Log in</button>
+        <div class="footer-text">
+          <span>Don't have an account?</span>
+          <a href="signup.html">Sign up</a>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- Plaid Link JavaScript -->
-  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script>
-    async function createLinkToken() {
-      const response = await fetch('http://localhost:3000/create_link_token');
-      const data = await response.json();
-      return data.link_token;
-    }
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
 
-    document.getElementById('linkButton').addEventListener('click', async () => {
-      const linkToken = await createLinkToken();
-      const handler = Plaid.create({
-        token: linkToken,
-        onSuccess: async function(public_token) {
-          console.log('Public Token:', public_token);
-          // Exchange public token for access token
-          const exchangeResponse = await fetch('http://localhost:3000/exchange_public_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ public_token })
-          });
-          const exchangeData = await exchangeResponse.json();
-          console.log('Access Token:', exchangeData.access_token);
-          // Automatically fetch transactions
-          await fetchTransactions(exchangeData.access_token);
+      try {
+        // Adjust to your actual login endpoint: /api/users/login or /auth/login
+        const response = await fetch('http://localhost:5000/api/users/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          alert('Login failed: ' + (data.message || data.error));
+          return;
         }
-      });
-      handler.open();
-    });
+        
+        // Usually, you’d store the token in localStorage or a cookie:
+        localStorage.setItem('authToken', data.token);
 
-    async function fetchTransactions(access_token) {
-      const response = await fetch('http://localhost:3000/get_transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token })
-      });
-      const data = await response.json();
-      console.log('Transactions:', data.transactions);
-    }
+        alert('Login successful!');
+        // Redirect to the dashboard or somewhere else:
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred during login.');
+      }
+    });
   </script>
 
 </body>
