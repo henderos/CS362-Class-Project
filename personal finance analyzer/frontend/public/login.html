@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Bank Account | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 60px);
+    }
+    .left-section {
+      flex: 1;
+      background: url('path/to/building-image.jpg') center center no-repeat;
+      background-size: cover;
+    }
+    .right-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="subscriptions.html">Subscriptions</a></li>
+        <li><a href="spending-reports.html">Spending reports</a></li>
+        <li><a href="budgeting.html">Budgeting tool</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <a href="feedback.html" class="feedback-link">Send feedback</a>
+      <!-- Login/Signup links removed since we are now using bank connection -->
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="left-section">
+      <!-- Background image -->
+    </div>
+    <div class="right-section">
+      <h2>Connect Your Bank Account with Plaid</h2>
+      <button id="linkButton">Plaid Login</button>
+    </div>
+  </div>
+
+  <!-- Plaid Link JavaScript -->
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script>
+    async function createLinkToken() {
+      const response = await fetch('http://localhost:3000/create_link_token');
+      const data = await response.json();
+      return data.link_token;
+    }
+
+    document.getElementById('linkButton').addEventListener('click', async () => {
+      const linkToken = await createLinkToken();
+      const handler = Plaid.create({
+        token: linkToken,
+        onSuccess: async function(public_token) {
+          console.log('Public Token:', public_token);
+          // Exchange public token for access token
+          const exchangeResponse = await fetch('http://localhost:3000/exchange_public_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ public_token })
+          });
+          const exchangeData = await exchangeResponse.json();
+          console.log('Access Token:', exchangeData.access_token);
+          // Automatically fetch transactions
+          await fetchTransactions(exchangeData.access_token);
+        }
+      });
+      handler.open();
+    });
+
+    async function fetchTransactions(access_token) {
+      const response = await fetch('http://localhost:3000/get_transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_token })
+      });
+      const data = await response.json();
+      console.log('Transactions:', data.transactions);
+    }
+  </script>
+</body>
+</html>
