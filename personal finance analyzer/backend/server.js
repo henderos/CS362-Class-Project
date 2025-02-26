@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+
 require("dotenv").config();
 
 // Import Routes
@@ -24,7 +26,12 @@ app.get("/test-db", async (req, res) => {
 });
 
 // Serve static files from the frontend/public directory
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
+app.use(express.static(path.join(__dirname, "..", "frontend", "public")));
+
+// Serve login.html when accessing the root URL
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "public", "login.html"));
+});
 
 // Use Routes
 app.use("/api/users", userRoutes);
