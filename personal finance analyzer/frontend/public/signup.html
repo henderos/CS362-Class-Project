@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    /* Basic layout for the sign-up page */
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 60px); /* if navbar is ~60px tall */
+    }
+    .left-section {
+      flex: 1;
+      background: url('path/to/building-image.jpg') center center no-repeat;
+      background-size: cover;
+    }
+    .right-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+    }
+    form {
+      max-width: 300px;
+      width: 100%;
+    }
+    form h2 {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .footer-text {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .footer-text a {
+      color: #333;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Include navbar -->
+  <div id="navbar">
+
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+        <ul class="nav-links">
+          <li><a href="plaid.html">Link Bank Account</a></li>
+          <li><a href="dashboard.html">Home</a></li>
+          <li><a href="subscriptions.html">Subscriptions</a></li>
+          <li><a href="spending-reports.html">Spending reports</a></li>
+          <li><a href="budgeting.html">Budgeting tool</a></li>
+        </ul>
+      </div>
+      <div class="navbar-right">
+        <a href="feedback.html" class="feedback-link">Send feedback</a>
+        <a href="login.html" class="btn-login">Log in</a>
+        <a href="signup.html" class="btn-signup">Sign up</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="left-section">
+      <!-- Left side background image still to attach -->
+    </div>
+    <div class="right-section">
+      <form id="signupForm">
+        <h2>Sign up</h2>
+        <p>Sign up for free to start making better financial decisions</p>
+        <label for="signupEmail">Email address</label>
+        <input type="email" id="signupEmail" required />
+
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" required />
+
+        <button type="submit">Sign up</button>
+        <div class="footer-text">
+          <span>Already have an account?</span>
+          <a href="login.html">Log in</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+
+
+      try {
+        const response = await fetch('http://localhost:5000/api/users/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: 'Placeholder Name', email, password })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          alert('Sign-up failed: ' + (errData.error || response.statusText));
+          return;
+        }
+
+        const data = await response.json();
+        alert('Sign-up successful! User ID: ' + data.userId);
+        // Redirect or do something else here:
+        window.location.href = 'login.html';
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred during sign-up.');
+      }
+    });
+  </script>
+
+</body>
+</html>

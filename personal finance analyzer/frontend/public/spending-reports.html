@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spending Reports | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .main-content {
+      padding: 1rem;
+    }
+    .report-form {
+      max-width: 400px;
+      margin-bottom: 2rem;
+    }
+    .report-form label {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .report-form input {
+      margin-bottom: 1rem;
+      width: 100%;
+      padding: 0.5rem;
+    }
+    .report-section {
+      margin-top: 1rem;
+    }
+    .chart-placeholder {
+      width: 600px;
+      height: 300px;
+      background-color: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+      <ul class="nav-links">
+        <li><a href="plaid.html">Link Bank Account</a></li>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="subscriptions.html">Subscriptions</a></li>
+        <li><a href="spending-reports.html">Spending reports</a></li>
+        <li><a href="budgeting.html">Budgeting tool</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <a href="feedback.html" class="feedback-link">Send feedback</a>
+      <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Spending Reports</h1>
+    <div class="report-form">
+      <h3>Generate Spending Report</h3>
+      <form id="reportForm">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" required />
+
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" required />
+
+        <button type="submit">Generate Report</button>
+      </form>
+    </div>
+
+    <div class="report-section" id="reportSection">
+      <h3>Report Results</h3>
+      <!-- Placeholder for a chart or a summary table -->
+      <div class="chart-placeholder" id="chartPlaceholder">
+        <span>Chart / Graph will appear here</span>
+      </div>
+      <ul id="reportDetails">
+        <!-- Detailed data appended by JS -->
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const reportForm = document.getElementById('reportForm');
+    reportForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('Please log in first!');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/spending-report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ startDate, endDate })
+        });
+        if (!response.ok) throw new Error('Failed to generate report');
+
+        const reportData = await response.json();
+
+        // For now, just display raw info
+        document.getElementById('chartPlaceholder').innerHTML = `
+          <span>Total Spent: $${reportData.totalSpent}</span>
+        `;
+
+        const detailsList = document.getElementById('reportDetails');
+        detailsList.innerHTML = '';
+        reportData.transactions.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = `${t.date} - ${t.description} - $${t.amount}`;
+          detailsList.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error(err);
+        alert('Error generating report: ' + err.message);
+      }
+    });
+  </script>
+
+</body>
+</html>

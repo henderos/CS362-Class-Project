@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .main-content {
+      padding: 1rem;
+    }
+    .overview-sections {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .overview-card {
+      flex: 1;
+      background-color: #f2f2f2;
+      border-radius: 8px;
+      padding: 1rem;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+      <ul class="nav-links">
+        <li><a href="plaid.html">Link Bank Account</a></li>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="subscriptions.html">Subscriptions</a></li>
+        <li><a href="spending-reports.html">Spending reports</a></li>
+        <li><a href="budgeting.html">Budgeting tool</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <a href="feedback.html" class="feedback-link">Send feedback</a>
+
+      <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Welcome to your Dashboard</h1>
+    <p>Here’s an overview of your recent transactions, monthly spending, and account balances.</p>
+
+    <div class="overview-sections">
+      <div class="overview-card">
+        <h3>Recent Transactions</h3>
+        <ul id="recentTransactions">
+          <!-- javascript -->
+        </ul>
+      </div>
+      <div class="overview-card">
+        <h3>Monthly Spending</h3>
+        <p id="monthlySpending">$0</p>
+      </div>
+      <div class="overview-card">
+        <h3>Account Balances</h3>
+        <p id="accountBalances">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          alert('Please log in first!');
+          window.location.href = 'login.html';
+          return;
+        }
+
+
+
+        const response = await fetch('http://localhost:5000/api/financial-data', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error('Failed to fetch dashboard data');
+
+        const data = await response.json();
+        // Suppose data = { transactions: [...], monthlySpending: 1234.56, accounts: [...] }
+
+        // Populate transactions
+        const transactionsList = document.getElementById('recentTransactions');
+        data.transactions.forEach((tx) => {
+          const li = document.createElement('li');
+          li.textContent = `${tx.date} - ${tx.description} - $${tx.amount}`;
+          transactionsList.appendChild(li);
+        });
+
+        // Show monthly spending
+        document.getElementById('monthlySpending').textContent = `$${data.monthlySpending}`;
+
+        // Show account balances
+        document.getElementById('accountBalances').textContent =
+          data.accounts.map(a => `${a.name}: $${a.balance}`).join(', ');
+      } catch (err) {
+        console.error(err);
+        alert('Error loading dashboard data');
+      }
+    });
+  </script>
+
+</body>
+</html>

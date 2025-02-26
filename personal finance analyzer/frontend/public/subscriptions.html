@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subscriptions | Personal Finance Analyzer</title>
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .main-content {
+      padding: 1rem;
+    }
+    .subscriptions-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .subscription-card {
+      flex: 0 1 200px;
+      background-color: #f2f2f2;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .subscription-card img {
+      max-width: 30px;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
+      <ul class="nav-links">
+        <li><a href="plaid.html">Link Bank Account</a></li>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="subscriptions.html">Subscriptions</a></li>
+        <li><a href="spending-reports.html">Spending reports</a></li>
+        <li><a href="budgeting.html">Budgeting tool</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <a href="feedback.html" class="feedback-link">Send feedback</a>
+      <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <h1>Subscriptions Overview</h1>
+    <div class="subscriptions-container" id="subscriptionsContainer">
+      <!-- Cards will be added by JS -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          alert('Please log in first!');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Fetch recurring transactions from your endpoint
+        const response = await fetch('http://localhost:5000/api/subscriptions', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error('Failed to fetch subscriptions');
+
+        const data = await response.json(); 
+
+
+        const container = document.getElementById('subscriptionsContainer');
+        data.forEach(sub => {
+          const card = document.createElement('div');
+          card.className = 'subscription-card';
+
+          card.innerHTML = `
+            <div style="display:flex; align-items:center;">
+              <img src="${sub.iconUrl}" alt="${sub.name} logo" />
+              <h3>${sub.name}</h3>
+            </div>
+            <p>Cost: $${sub.cost}</p>
+            <p>Frequency: ${sub.usageFrequency || 'N/A'}</p>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Error loading subscriptions');
+      }
+    });
+  </script>
+
+</body>
+</html>
