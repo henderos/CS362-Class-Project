@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connect Bank Account | Personal Finance Analyzer</title>
   <link rel="stylesheet" href="css/navbar.css" />
+  <script src="js/auth.js"></script>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -16,7 +19,7 @@
     }
     .left-section {
       flex: 1;
-      background: url('path/to/building-image.jpg') center center no-repeat;
+      background: url('images/building-login.JPG') center center no-repeat;
       background-size: cover;
     }
     .right-section {
@@ -40,73 +43,89 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-left">
       <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
       <ul class="nav-links">
-        <li><a href="plaid.html">Link Bank Account</a></li>
         <li><a href="dashboard.html">Home</a></li>
-        <li><a href="subscriptions.html">Subscriptions</a></li>
-        <li><a href="spending-reports.html">Spending reports</a></li>
-        <li><a href="budgeting.html">Budgeting tool</a></li>
       </ul>
-    </div>
-    <div class="navbar-right">
-      <a href="feedback.html" class="feedback-link">Send feedback</a>
-      <!-- Login/Signup links removed since we are now using bank connection -->
     </div>
   </nav>
 
   <div class="container">
-    <div class="left-section">
-      <!-- Background image -->
-    </div>
+    <div class="left-section"></div>
     <div class="right-section">
       <h2>Connect Your Bank Account</h2>
       <button id="linkButton">Connect Bank Account</button>
     </div>
   </div>
 
-  <!-- Plaid Link JavaScript -->
-  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script>
+    async function checkIfAccountLinked() {
+        const user_id = localStorage.getItem("userId");
+        if (!user_id) {
+            alert("User not found. Please log in again.");
+            window.location.href = "login.html";
+            return false;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/plaid/check_account/${user_id}`);
+            const data = await response.json();
+
+            if (data.hasLinkedAccount) {
+                console.log("✅ Existing Plaid Account Found");
+                alert("You already have a linked bank account!");
+                return true;
+            } else {
+                console.log("❌ No linked account found");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error checking account status:", error);
+            return false;
+        }
+    }
+
     async function createLinkToken() {
-      const response = await fetch('http://localhost:3000/create_link_token');
-      const data = await response.json();
-      return data.link_token;
+        try {
+            const response = await fetch("http://localhost:5000/api/plaid/create_link_token");
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            const data = await response.json();
+            return data.link_token;
+        } catch (error) {
+            console.error("Error creating Plaid link token:", error);
+            alert("Failed to create Plaid link token.");
+        }
     }
 
     document.getElementById('linkButton').addEventListener('click', async () => {
-      const linkToken = await createLinkToken();
-      const handler = Plaid.create({
-        token: linkToken,
-        onSuccess: async function(public_token) {
-          console.log('Public Token:', public_token);
-          // Exchange public token for access token
-          const exchangeResponse = await fetch('http://localhost:3000/exchange_public_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ public_token })
-          });
-          const exchangeData = await exchangeResponse.json();
-          console.log('Access Token:', exchangeData.access_token);
-          // Automatically fetch transactions
-          await fetchTransactions(exchangeData.access_token);
-        }
-      });
-      handler.open();
-    });
+        if (await checkIfAccountLinked()) return;
 
-    async function fetchTransactions(access_token) {
-      const response = await fetch('http://localhost:3000/get_transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token })
-      });
-      const data = await response.json();
-      console.log('Transactions:', data.transactions);
-    }
+        const linkToken = await createLinkToken();
+        if (!linkToken) return;
+
+        const user_id = localStorage.getItem("userId");
+
+        const handler = Plaid.create({
+            token: linkToken,
+            onSuccess: async function(public_token) {
+                const response = await fetch("http://localhost:5000/api/plaid/exchange_public_token", { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ public_token, user_id })
+                });
+
+                const data = await response.json();
+                console.log("Access Token:", data.access_token);
+                alert("Bank account linked successfully!");
+            }
+        });
+
+        handler.open();
+    });
   </script>
+
 </body>
 </html>
