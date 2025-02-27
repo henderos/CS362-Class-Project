@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Dashboard | Personal Finance Analyzer</title>
   <link rel="stylesheet" href="css/navbar.css" />
+  <script src="js/auth.js"></script>
   <style>
     body {
       margin: 0;
@@ -24,6 +25,14 @@
       padding: 1rem;
       min-height: 200px;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
@@ -42,7 +51,6 @@
     </div>
     <div class="navbar-right">
       <a href="feedback.html" class="feedback-link">Send feedback</a>
-
       <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
     </div>
   </nav>
@@ -55,7 +63,7 @@
       <div class="overview-card">
         <h3>Recent Transactions</h3>
         <ul id="recentTransactions">
-          <!-- javascript -->
+          <li>Loading transactions...</li>
         </ul>
       </div>
       <div class="overview-card">
@@ -70,7 +78,6 @@
   </div>
 
   <script>
-    
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         const token = localStorage.getItem('authToken');
@@ -80,30 +87,40 @@
           return;
         }
 
+        const user_id = localStorage.getItem('userId'); // Ensure user ID is stored after login
+        if (!user_id) {
+          alert('User ID not found. Please log in again.');
+          window.location.href = 'login.html';
+          return;
+        }
 
+        // Fetch transactions from backend
+        const transactionsResponse = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
+        if (!transactionsResponse.ok) throw new Error('Failed to fetch transactions');
 
-        const response = await fetch('http://localhost:5000/api/financial-data', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!response.ok) throw new Error('Failed to fetch dashboard data');
+        const transactions = await transactionsResponse.json();
 
-        const data = await response.json();
-        // Suppose data = { transactions: [...], monthlySpending: 1234.56, accounts: [...] }
-
-        // Populate transactions
+        // Populate the Recent Transactions list
         const transactionsList = document.getElementById('recentTransactions');
-        data.transactions.forEach((tx) => {
-          const li = document.createElement('li');
-          li.textContent = `${tx.date} - ${tx.description} - $${tx.amount}`;
-          transactionsList.appendChild(li);
-        });
+        transactionsList.innerHTML = transactions.length > 0
+          ? transactions.map(tx => `<li>${tx.date} - ${tx.merchant_name || "Unknown"} - $${tx.amount.toFixed(2)}</li>`).join("")
+          : "<li>No transactions found</li>";
+
+        // Fetch financial overview (spending & balances)
+        const financeResponse = await fetch(`http://localhost:5000/api/financial-data?user_id=${user_id}`);
+        if (!financeResponse.ok) throw new Error('Failed to fetch financial data');
+
+        const data = await financeResponse.json();
 
         // Show monthly spending
-        document.getElementById('monthlySpending').textContent = `$${data.monthlySpending}`;
+        document.getElementById('monthlySpending').textContent = `$${data.monthlySpending.toFixed(2)}`;
 
         // Show account balances
         document.getElementById('accountBalances').textContent =
-          data.accounts.map(a => `${a.name}: $${a.balance}`).join(', ');
+          data.accounts.length > 0
+            ? data.accounts.map(a => `${a.name}: $${a.balance}`).join(', ')
+            : "No linked accounts.";
+
       } catch (err) {
         console.error(err);
         alert('Error loading dashboard data');
