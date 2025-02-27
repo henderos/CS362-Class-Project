@@ -84,4 +84,47 @@ router.post("/exchange_public_token", async (req, res) => {
     }
 });
 
+
+/**
+ * @route GET /api/plaid/user_transactions/:user_id
+ * @desc Fetch recent transactions and account balances
+ */
+router.get("/user_transactions/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+
+        const [users] = await db.query("SELECT access_token FROM users WHERE id = ?", [user_id]);
+
+        if (!users.length || !users[0].access_token) {
+            return res.status(400).json({ error: "User has no linked bank account" });
+        }
+
+        const access_token = users[0].access_token;
+
+
+        const balanceResponse = await plaidClient.accountsBalanceGet({ access_token });
+
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);
+        const endDate = new Date();
+
+        const transactionResponse = await plaidClient.transactionsGet({
+            access_token,
+            start_date: startDate.toISOString().split("T")[0],
+            end_date: endDate.toISOString().split("T")[0],
+            options: { count: 10 }, // Fetch last 10 transactions
+        });
+
+        res.json({
+            accounts: balanceResponse.data.accounts,
+            transactions: transactionResponse.data.transactions
+        });
+    } catch (error) {
+        console.error("Error fetching transactions:", error);
+        res.status(500).json({ error: "Failed to retrieve transactions" });
+    }
+});
+
+
 module.exports = router;

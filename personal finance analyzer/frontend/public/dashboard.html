@@ -81,49 +81,44 @@
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-          alert('Please log in first!');
-          window.location.href = 'login.html';
-          return;
+        const user_id = localStorage.getItem('userId');
+
+        if (!token || !user_id) {
+            alert('Please log in first!');
+            window.location.href = 'login.html';
+            return;
         }
 
-        const user_id = localStorage.getItem('userId'); // Ensure user ID is stored after login
-        if (!user_id) {
-          alert('User ID not found. Please log in again.');
-          window.location.href = 'login.html';
-          return;
-        }
+        // Fetch transactions and account balances
+        const response = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
+        if (!response.ok) throw new Error("Failed to fetch data");
 
-        // Fetch transactions from backend
-        const transactionsResponse = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
-        if (!transactionsResponse.ok) throw new Error('Failed to fetch transactions');
+        const data = await response.json();
 
-        const transactions = await transactionsResponse.json();
+        // Display transactions
+        const transactionsList = document.getElementById("recentTransactions");
+        transactionsList.innerHTML = data.transactions.length > 0
+            ? data.transactions.map(tx => `<li>${tx.date} - ${tx.merchant_name || "Unknown"} - $${tx.amount.toFixed(2)}</li>`).join("")
+            : "<li>No transactions found</li>";
 
-        // Populate the Recent Transactions list
-        const transactionsList = document.getElementById('recentTransactions');
-        transactionsList.innerHTML = transactions.length > 0
-          ? transactions.map(tx => `<li>${tx.date} - ${tx.merchant_name || "Unknown"} - $${tx.amount.toFixed(2)}</li>`).join("")
-          : "<li>No transactions found</li>";
+        // Display account balances
+        const balancesElement = document.getElementById("accountBalances");
+        balancesElement.innerHTML = data.accounts.length > 0
+            ? data.accounts.map(a => `<p>${a.name}: $${a.balances.available.toFixed(2)}</p>`).join("")
+            : "No linked accounts.";
 
-        // Fetch financial overview (spending & balances)
+        // Fetch financial overview (monthly spending)
         const financeResponse = await fetch(`http://localhost:5000/api/financial-data?user_id=${user_id}`);
         if (!financeResponse.ok) throw new Error('Failed to fetch financial data');
 
-        const data = await financeResponse.json();
+        const financeData = await financeResponse.json();
 
         // Show monthly spending
-        document.getElementById('monthlySpending').textContent = `$${data.monthlySpending.toFixed(2)}`;
-
-        // Show account balances
-        document.getElementById('accountBalances').textContent =
-          data.accounts.length > 0
-            ? data.accounts.map(a => `${a.name}: $${a.balance}`).join(', ')
-            : "No linked accounts.";
+        document.getElementById('monthlySpending').textContent = `$${financeData.monthlySpending.toFixed(2)}`;
 
       } catch (err) {
-        console.error(err);
-        alert('Error loading dashboard data');
+          console.error(err);
+          alert("Error loading dashboard data.");
       }
     });
   </script>
