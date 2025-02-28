@@ -136,6 +136,7 @@
 
             //  Store userId in localStorage
             localStorage.setItem('userId', data.userId); 
+            localStorage.setItem('authToken', data.token);
             console.log(" Stored userId:", localStorage.getItem("userId")); // Debugging
 
             alert('Login successful!');
