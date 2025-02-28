@@ -117,8 +117,7 @@
         const financeData = await financeResponse.json();
 
         // Show monthly spending
-        document.getElementById('monthlySpending').textContent = `$${financeData.monthlySpending.toFixed(2)}`;
-
+        document.getElementById('monthlySpending').textContent = `$${(parseFloat(financeData.monthlySpending) || 0).toFixed(2)}`;
       } catch (err) {
           console.error(err);
           alert("Error loading dashboard data.");

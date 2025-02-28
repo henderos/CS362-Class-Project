@@ -7,6 +7,7 @@ require("dotenv").config();
 const userRoutes = require("./src/routes/userRoutes");
 const budgetRoutes = require("./src/routes/budgetRoutes");
 const plaidRoutes = require("./src/routes/plaidRoutes"); //  Added Plaid Routes
+const financialDataRoutes = require("./src/routes/financialDataRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/plaid", plaidRoutes); //  Plaid Routes Integrated
 app.use("/api/budgets", budgetRoutes);
+app.use("/api/financial-data", financialDataRoutes);
 
 //  Test DB Connection Endpoint
 const db = require("./src/config/db");
