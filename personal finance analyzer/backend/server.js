@@ -9,6 +9,8 @@ const budgetRoutes = require("./src/routes/budgetRoutes");
 const plaidRoutes = require("./src/routes/plaidRoutes"); //  Added Plaid Routes
 const financialDataRoutes = require("./src/routes/financialDataRoutes");
 const subscriptionsRoutes = require("./src/routes/subscriptionsRoutes");
+const spendingReportRoutes = require("./src/routes/spendingReportRoutes");
+
 
 
 const app = express();
@@ -32,6 +34,8 @@ app.use("/api/plaid", plaidRoutes); //  Plaid Routes Integrated
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/financial-data", financialDataRoutes);
 app.use("/api/subscriptions", subscriptionsRoutes);
+app.use("/api/spending-report", spendingReportRoutes);
+
 
 
 //  Test DB Connection Endpoint
