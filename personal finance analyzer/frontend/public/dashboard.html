@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Dashboard | Personal Finance Analyzer</title>
   <link rel="stylesheet" href="css/navbar.css" />
+  <script src="js/auth.js"></script>
   <style>
     body {
       margin: 0;
@@ -24,6 +25,14 @@
       padding: 1rem;
       min-height: 200px;
     }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
@@ -31,6 +40,9 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-left">
+      <a href="dashboard.html">
+        <img src="images/logo_1.png" alt="App Logo" class="navbar-logo">
+      </a>
       <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
       <ul class="nav-links">
         <li><a href="plaid.html">Link Bank Account</a></li>
@@ -42,8 +54,7 @@
     </div>
     <div class="navbar-right">
       <a href="feedback.html" class="feedback-link">Send feedback</a>
-
-      <img src="path/to/avatar.jpg" alt="User Avatar" class="user-avatar" />
+      <img src="images/avatar.jpg" alt="User Avatar" class="user-avatar" />
     </div>
   </nav>
 
@@ -55,7 +66,7 @@
       <div class="overview-card">
         <h3>Recent Transactions</h3>
         <ul id="recentTransactions">
-          <!-- javascript -->
+          <li>Loading transactions...</li>
         </ul>
       </div>
       <div class="overview-card">
@@ -70,43 +81,46 @@
   </div>
 
   <script>
-    
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-          alert('Please log in first!');
-          window.location.href = 'login.html';
-          return;
+        const user_id = localStorage.getItem('userId');
+
+        if (!token || !user_id) {
+            alert('Please log in first!');
+            window.location.href = 'login.html';
+            return;
         }
 
-
-
-        const response = await fetch('http://localhost:5000/api/financial-data', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!response.ok) throw new Error('Failed to fetch dashboard data');
+        // Fetch transactions and account balances
+        const response = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
+        if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-        // Suppose data = { transactions: [...], monthlySpending: 1234.56, accounts: [...] }
 
-        // Populate transactions
-        const transactionsList = document.getElementById('recentTransactions');
-        data.transactions.forEach((tx) => {
-          const li = document.createElement('li');
-          li.textContent = `${tx.date} - ${tx.description} - $${tx.amount}`;
-          transactionsList.appendChild(li);
-        });
+        // Display transactions
+        const transactionsList = document.getElementById("recentTransactions");
+        transactionsList.innerHTML = data.transactions.length > 0
+            ? data.transactions.map(tx => `<li>${tx.date} - ${tx.merchant_name || "Unknown"} - $${tx.amount.toFixed(2)}</li>`).join("")
+            : "<li>No transactions found</li>";
+
+        // Display account balances
+        const balancesElement = document.getElementById("accountBalances");
+        balancesElement.innerHTML = data.accounts.length > 0
+            ? data.accounts.map(a => `<p>${a.name}: $${a.balances.available.toFixed(2)}</p>`).join("")
+            : "No linked accounts.";
+
+        // Fetch financial overview (monthly spending)
+        const financeResponse = await fetch(`http://localhost:5000/api/financial-data?user_id=${user_id}`);
+        if (!financeResponse.ok) throw new Error('Failed to fetch financial data');
+
+        const financeData = await financeResponse.json();
 
         // Show monthly spending
-        document.getElementById('monthlySpending').textContent = `$${data.monthlySpending}`;
-
-        // Show account balances
-        document.getElementById('accountBalances').textContent =
-          data.accounts.map(a => `${a.name}: $${a.balance}`).join(', ');
+        document.getElementById('monthlySpending').textContent = `$${(parseFloat(financeData.monthlySpending) || 0).toFixed(2)}`;
       } catch (err) {
-        console.error(err);
-        alert('Error loading dashboard data');
+          console.error(err);
+          alert("Error loading dashboard data.");
       }
     });
   </script>
