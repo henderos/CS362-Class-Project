@@ -43,6 +43,9 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-left">
+      <a href="dashboard.html">
+        <img src="images/logo_1.png" alt="App Logo" class="navbar-logo">
+      </a>
       <a href="#" class="navbar-brand">Personal Finance Analyzer</a>
       <ul class="nav-links">
         <li><a href="plaid.html">Link Bank Account</a></li>
@@ -55,6 +58,7 @@
     <div class="navbar-right">
       <a href="feedback.html" class="feedback-link">Send feedback</a>
       <img src="images/avatar.jpg" alt="User Avatar" class="user-avatar" />
+      <button class="btn-logout" onclick="logoutUser()">Logout</button>
     </div>
   </nav>
 
@@ -151,6 +155,12 @@
         console.error(err);
         alert('Error loading budgets');
       }
+    }
+    function logoutUser() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userId');
+      alert("You have been logged out.");
+      window.location.href = "login.html";
     }
   </script>
 

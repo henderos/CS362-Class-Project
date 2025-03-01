@@ -7,7 +7,7 @@ const registerUser = async (req, res) => {
   }
 
   try {
-    // Insert user into database (no hashing)
+    //insert user into database (no hashing)
     const [result] = await db.query(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
       [name, email, password]
@@ -23,17 +23,20 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find user by email
+    //find user by email
     const [users] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
 
     if (users.length === 0) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Check if the password matches (no hashing)
+    //check if the password matches (no hashing)
     if (users[0].password !== password) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    //if using sessions, you might set a session property here:
+    // req.session.userId = users[0].id;
 
     res.json({ message: "Login successful", userId: users[0].id });
   } catch (error) {
@@ -50,4 +53,19 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getAllUsers };
+//logout functionality using session destruction
+const logoutUser = (req, res) => {
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        return res.status(500).json({ error: "Logout failed. Please try again." });
+      }
+      return res.json({ message: "Logout successful" });
+    });
+  } else {
+    //if no session exists, simply respond with a success message
+    return res.json({ message: "Logout successful" });
+  }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers, logoutUser };
