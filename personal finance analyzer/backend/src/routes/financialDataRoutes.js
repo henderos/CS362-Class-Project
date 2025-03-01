@@ -1,5 +1,4 @@
 const express = require("express");
-const db = require("../config/db");
 const router = express.Router();
 
 /**
@@ -11,24 +10,33 @@ router.get("/", async (req, res) => {
     if (!user_id) return res.status(400).json({ error: "User ID is required" });
 
     try {
-        // Get total spending for the current month
-        const [spending] = await db.query(`
-            SELECT COALESCE(SUM(amount), 0) AS total_spent 
-            FROM transactions 
-            WHERE user_id = ? AND MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())`, 
-        [user_id]);
+        // Fetch data from Plaid endpoint
+        const plaidResponse = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
+        if (!plaidResponse.ok) throw new Error("Failed to fetch Plaid data");
+        const { transactions, accounts } = await plaidResponse.json();
 
-        // Get account balances
-        const [accounts] = await db.query(`
-            SELECT account_id AS name, SUM(amount) AS balance 
-            FROM transactions 
-            WHERE user_id = ? 
-            GROUP BY account_id`, 
-        [user_id]);
+        // Calculate current month's spending
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
+        
+        const monthlySpending = transactions
+            .filter(tx => {
+                const txDate = new Date(tx.date);
+                return txDate.getMonth() + 1 === currentMonth && 
+                       txDate.getFullYear() === currentYear;
+            })
+            .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+
+        // Format account balances
+        const formattedAccounts = accounts.map(account => ({
+            name: account.name,
+            balance: account.balances.available
+        }));
 
         res.json({
-            monthlySpending: spending[0]?.total_spent || 0,
-            accounts: accounts || []
+            monthlySpending: monthlySpending || 0,
+            accounts: formattedAccounts || []
         });
 
     } catch (error) {
