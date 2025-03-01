@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
                 return txDate.getMonth() + 1 === currentMonth && 
                        txDate.getFullYear() === currentYear;
             })
-            .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+            .reduce((sum, tx) => sum + (tx.amount), 0);
 
         // Format account balances
         const formattedAccounts = accounts.map(account => ({
