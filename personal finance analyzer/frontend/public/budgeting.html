@@ -92,76 +92,117 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       await loadBudgets();
     });
 
-    const budgetForm = document.getElementById('budgetForm');
-    budgetForm.addEventListener('submit', async (e) => {
+    const budgetForm = document.getElementById("budgetForm");
+    budgetForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        alert('Please log in first!');
-        window.location.href = 'login.html';
+
+      const token = localStorage.getItem("authToken");
+      const userID = localStorage.getItem("userId");
+
+      if (!token || !userID) {
+        alert("Please log in first!");
+        window.location.href = "login.html";
         return;
       }
 
-      const category = document.getElementById('category').value;
-      const amount = document.getElementById('amount').value;
+      const category = document.getElementById("category").value;
+      const budget_amount = document.getElementById("amount").value;
+
+      console.log("Submitting Budget:", { userID, category, budget_amount }); // Debugging
 
       try {
-        const response = await fetch('http://localhost:5000/api/budgets', {
-          method: 'POST',
+        const response = await fetch("http://localhost:5000/api/budgets", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify({ category, amount })
+          body: JSON.stringify({ user_id: userID, category, budget_amount }), // ✅ Correct format
         });
-        if (!response.ok) throw new Error('Failed to set budget');
 
-        alert('Budget set successfully!');
+        if (!response.ok) throw new Error("Failed to set budget");
+
+        alert("Budget set successfully!");
         budgetForm.reset();
         await loadBudgets();
       } catch (err) {
-        console.error(err);
-        alert('Error setting budget: ' + err.message);
+        console.error("❌ Error setting budget:", err);
+        alert("Error setting budget: " + err.message);
       }
     });
 
+
     async function loadBudgets() {
-      const token = localStorage.getItem('authToken');
-      if (!token) return;
+      const token = localStorage.getItem("authToken");
+      const userID = localStorage.getItem("userId"); // ✅ Ensure userID is set correctly
+
+      if (!token || !userID) {
+        console.error("❌ User is not logged in or missing userId.");
+        return;
+      }
 
       try {
-        const response = await fetch('http://localhost:5000/api/budgets', {
-          headers: { 'Authorization': `Bearer ${token}` }
+        console.log(`Fetching budgets for user ID: ${userID}`); // Debugging
+
+        const response = await fetch(`http://localhost:5000/api/budgets/${userID}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
         });
-        if (!response.ok) throw new Error('Failed to load budgets');
 
-        const budgets = await response.json(); // e.g. [{ category, amount }, ...]
-        const tbody = document.getElementById('budgetsTable').querySelector('tbody');
-        tbody.innerHTML = ''; // Clear existing rows
+        if (!response.ok) throw new Error("Failed to load budgets");
 
-        budgets.forEach(b => {
-          const row = document.createElement('tr');
+        const budgets = await response.json();
+        console.log("✅ Budgets fetched:", budgets);
+
+        const tbody = document.getElementById("budgetsTable").querySelector("tbody");
+        tbody.innerHTML = "";
+
+        budgets.forEach((b) => {
+          const row = document.createElement("tr");
           row.innerHTML = `
             <td>${b.category}</td>
-            <td>$${b.amount}</td>
+            <td>$${b.budget_amount}</td>
+            <td><button onclick="deleteBudget('${b.category}')">Delete</button></td>
           `;
           tbody.appendChild(row);
         });
       } catch (err) {
-        console.error(err);
-        alert('Error loading budgets');
+        console.error("❌ Error loading budgets:", err);
+        alert("Error loading budgets.");
       }
     }
-    function logoutUser() {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userId');
-      alert("You have been logged out.");
-      window.location.href = "login.html";
+
+    async function deleteBudget(category) {
+      const token = localStorage.getItem("authToken");
+      const userID = localStorage.getItem("userId");
+
+      if (!token || !userID) return;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/budgets/${userID}/${category}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error("Failed to delete budget");
+
+        alert("Budget deleted successfully!");
+        await loadBudgets();
+      } catch (err) {
+        console.error("❌ Error deleting budget:", err);
+        alert("Error deleting budget");
+      }
     }
+
+
+
   </script>
 
 </body>
