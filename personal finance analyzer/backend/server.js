@@ -10,6 +10,7 @@ const plaidRoutes = require("./src/routes/plaidRoutes"); //  Added Plaid Routes
 const financialDataRoutes = require("./src/routes/financialDataRoutes");
 const subscriptionsRoutes = require("./src/routes/subscriptionsRoutes");
 const spendingReportRoutes = require("./src/routes/spendingReportRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 
 
 
@@ -35,6 +36,7 @@ app.use("/api/budgets", budgetRoutes);
 app.use("/api/financial-data", financialDataRoutes);
 app.use("/api/subscriptions", subscriptionsRoutes);
 app.use("/api/spending-report", spendingReportRoutes);
+app.use("/api/auth", authRoutes);
 
 
 
@@ -50,6 +52,8 @@ app.get("/test-db", async (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+  
+module.exports = server;
