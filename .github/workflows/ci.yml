@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
+        working-directory: 'personal finance analyzer/backend'
         run: npm install
       - name: Run tests
+        working-directory: 'personal finance analyzer/backend'
         run: npm test
