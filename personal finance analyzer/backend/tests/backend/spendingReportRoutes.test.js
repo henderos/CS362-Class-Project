@@ -1,9 +1,9 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const sinon = require("sinon");
-const app = require("../server"); // Adjust the path as needed
-const db = require("../src/config/db");
-const plaidClient = require("../src/config/plaidConfig");
+const app = require("../../server"); // Adjust the path as needed
+const db = require("../../src/config/db");
+const plaidClient = require("../../src/config/plaidConfig");
 
 chai.use(chaiHttp);
 const { expect } = chai;

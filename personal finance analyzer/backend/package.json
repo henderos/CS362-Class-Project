@@ -4,7 +4,16 @@
   "description": "**Personal Finance Analyzer**",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*.test.js"
+    "test:backend": "mocha tests/backend/*.test.js",
+    "test:frontend": "jest",
+    "test": "npm run test:backend && npm run test:frontend"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-jsdom",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/tests/backend/"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -21,8 +30,12 @@
     "sinon": "^19.0.2"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "mocha": "^11.1.0",
     "nock": "^14.0.1"
   }

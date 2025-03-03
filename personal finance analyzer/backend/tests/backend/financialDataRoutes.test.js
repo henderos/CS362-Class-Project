@@ -1,7 +1,7 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const nock = require("nock"); // For mocking external HTTP requests
-const app = require("../server"); // Adjust path if necessary
+const app = require("../../server"); // Adjust path if necessary
 
 chai.use(chaiHttp);
 const { expect } = chai;
