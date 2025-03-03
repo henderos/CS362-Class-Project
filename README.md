@@ -56,10 +56,9 @@ This project will help users manage and keep track of their personal finances, s
 ## Layout
 Weekly reports are located in the `reports/` directory in files with the format `YYYYMMDD.md`.
 
-# Operational Use Cases
+## Operational Use Cases
 
-## Use Case 1: Subscription Tracking
-
+### Use Case 1: Subscription Tracking
 **Actors:**
 - User
 - System
@@ -84,10 +83,7 @@ Weekly reports are located in the `reports/` directory in files with the format 
 - Errors in identifying recurring transactions.
 - Incomplete transaction data.
 
----
-
-## Use Case 2: Budget Setting
-
+### Use Case 2: Budget Setting
 **Actors:**
 - User
 - System
@@ -113,10 +109,7 @@ Weekly reports are located in the `reports/` directory in files with the format 
 **Exceptions:**
 - If the budget amount is too small or too large.
 
----
-
-## Use Case 3: Viewing Financial Data
-
+### Use Case 3: Viewing Financial Data
 **Actors:**
 - User
 - System
@@ -138,10 +131,7 @@ Weekly reports are located in the `reports/` directory in files with the format 
 **Exceptions:**
 - If the system can’t connect to the bank account.
 
----
-
-## Use Case 4: Generating Spending Reports
-
+### Use Case 4: Generating Spending Reports
 **Actors:**
 - User
 - System
@@ -166,5 +156,4 @@ Weekly reports are located in the `reports/` directory in files with the format 
 
 **Exceptions:**
 - Insufficient data for the selected time period.
-
 
