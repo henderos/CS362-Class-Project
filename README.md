@@ -12,6 +12,7 @@ This project will help users manage and keep track of their personal finances, s
 ## Build and Test Instructions
 
 1. **Clone the Repository:**  
+   - If you know how, you can use Github Desktop to clone the repository straight from the Github link. If not, you can open a bash terminal and type:
    ```bash
    git clone <repository-url>
    cd <repository-directory>
@@ -57,6 +58,7 @@ This project will help users manage and keep track of their personal finances, s
    Username: test@gmail.com
    Password: test
    ```
+
 
 
 ## Trello Link
