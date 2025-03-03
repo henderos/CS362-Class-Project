@@ -168,3 +168,34 @@ Weekly reports are located in the `reports/` directory in files with the format 
 **Exceptions:**
 - Insufficient data for the selected time period.
 
+### Use Case 5: User Login/Logout
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User selects the “Login” or “Logout” option within the app.
+
+**Preconditions:**
+- **Login:** The user has an active account and valid credentials.
+- **Logout:** The user is currently logged in.
+
+**Postconditions:**
+- **Login:** The user is successfully authenticated and gains access to the system.
+- **Logout:** The user is securely logged out, and the session is terminated.
+
+#### Login Process:
+1. User navigates to the login page.
+2. User enters valid credentials (username and password).
+3. System validates the credentials.
+4. System establishes a session and redirects the user to the dashboard.
+
+#### Logout Process:
+1. User clicks the logout button.
+2. System terminates the user session.
+3. User is redirected to the login or home page.
+
+**Exceptions:**
+- **Login:** Incorrect credentials or account locked.
+- **Logout:** Session timeout or network issues causing an incomplete logout.
+
