@@ -1,8 +1,8 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const nock = require("nock");
-const app = require("../server"); // Adjust path if necessary
-const db = require("../src/config/db");
+const app = require("../../server"); // Adjust path if necessary
+const db = require("../../src/config/db");
 
 chai.use(chaiHttp);
 const { expect } = chai;
