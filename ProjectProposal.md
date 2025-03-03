@@ -24,7 +24,7 @@ Our main form of communication will be Discord, where we will establish clear th
 
 ### <ins>Abstract</ins>
 
-Personal Finance Analyzer is a web application designed to simplify financial management for users, providing tools to track spending and manage subscriptions. With an intuitive user interface and analytics, it aims to empower users to make informed financial decisions effortlessly.
+The Personal Finance Analyzer is a web-based personal finance management tool that empowers users to take control of their finances through automated tracking, real-time budget alerts, and spending analysis. Unlike traditional finance apps that require manual tracking or lock advanced features behind a paywall, this app offers a streamlined, all-in-one platform that integrates multiple accounts to provide a comprehensive financial overview.
 
 ### <ins>Goal</ins>
 
