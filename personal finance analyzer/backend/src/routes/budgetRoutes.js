@@ -141,23 +141,25 @@ router.get("/track/:user_id", async (req, res) => {
     const { user_id } = req.params;
 
     try {
-        const [trackingData] = await db.query(
-            `SELECT 
-                b.category,
-                b.budget_amount,
-                COALESCE(SUM(t.amount), 0) AS spent_amount,
-                (b.budget_amount - COALESCE(SUM(t.amount), 0)) AS remaining_budget
-            FROM budgets b
-            LEFT JOIN transactions t ON b.user_id = t.user_id AND b.category = t.category
-            WHERE b.user_id = ?
-            GROUP BY b.category`,
+        // Retrieve budgets for the user
+        const [budgets] = await db.query(
+            "SELECT category, budget_amount FROM budgets WHERE user_id = ?",
             [user_id]
         );
+
+        // Since transactions are no longer used, assume spent amount is 0
+        const trackingData = budgets.map(budget => ({
+            category: budget.category,
+            budget_amount: budget.budget_amount,
+            spent_amount: 0,
+            remaining_budget: budget.budget_amount
+        }));
 
         res.json(trackingData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 module.exports = router;

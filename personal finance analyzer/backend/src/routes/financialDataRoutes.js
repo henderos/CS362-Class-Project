@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const fetch = require("node-fetch");
+
 
 /**
  * @route GET /api/financial-data
@@ -17,14 +19,14 @@ router.get("/", async (req, res) => {
 
         // Calculate current month's spending
         const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1;
-        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getUTCMonth() + 1;
+        const currentYear = currentDate.getUTCFullYear();
         
         const monthlySpending = transactions
             .filter(tx => {
                 const txDate = new Date(tx.date);
-                return txDate.getMonth() + 1 === currentMonth && 
-                       txDate.getFullYear() === currentYear;
+                return txDate.getUTCMonth() + 1 === currentMonth && 
+                       txDate.getUTCFullYear() === currentYear;
             })
             .reduce((sum, tx) => sum + (tx.amount), 0);
 
