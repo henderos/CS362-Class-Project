@@ -34,6 +34,8 @@ This project will help users manage and keep track of their personal finances, s
    ```bash
    npm test
    ```
+   After seeing the test results, quit the testing by doing "CTRL + C" on your keyboard
+
    Otherwise, manually test the system locally by verifying that each functionality (login, linking bank accounts, budgeting, spending reports, and dahsboard) works as expected.
 
 
