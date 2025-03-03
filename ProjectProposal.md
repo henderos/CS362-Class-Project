@@ -216,6 +216,23 @@ Our software design focuses on creating a user-centric environment that is both 
 - **Database Layer**: MySQL houses user accounts, transaction records, and subscription details. By using relational constraints, the system ensures data consistency (e.g., a transaction must be linked to an existing user_id).
 - **Third-Party Integration**: Where supported, Dam Dollars connects to external APIs (e.g., Plaid) for secure retrieval of transaction data, which is then normalized and stored.
 
+### Database Schema
+- **Users**: Stores user profiles, authentication credentials (securely hashed), and any personalization settings (e.g., default currency or notification preferences).
+- **Accounts**: Lists bank or credit card accounts linked to each user, capturing details like account type and balance.
+- **Transactions**: Contains the timestamp, amount, merchant/category, and references the appropriate account_id and user_id.
+- **Budgets**: Tracks spending limits across different categories (e.g., groceries), along with timestamps to support monthly or custom budget cycles.
+- **Subscriptions**: Records recurring charges (e.g., Netflix, gym memberships) and frequency details, helping users spot underutilized services.
+- **Auxilary Tables**: May include categories or merchant lookups to assist with consistency and reporting.
+
+### Design Philosophy And Constraits
+- **Clarity Over Complexity**: Each page is organized around a primary user goal (e.g., reviewing budgets), minimizing clutter.
+- **Role-Based Access and Security**: While many features are end-user facing, administrative tools (like analyzing aggregated usage metrics) are restricted to authorized team members via role-based access control.
+- **Scalability and Felixibility**: If Dam Dollars needs to integrate with additional third-party providers or introduce new financial categories, the database schema can accommodate these expansions through well-defined relationships and table structures.
+
+### Adaptability for Future Features
+- **Modular UI**: Each major feature (budgets, subscriptions, reports) is a distinct component, allowing for straightforward updates or the addition of new modules (e.g., AI-driven financial advice) without overhauling existing code.
+- **Extendable Schema**: Extra fields or tables can be introduced as data needs grow, such as for more detailed transaction analytics or advanced forecasting features.
+
 ### Database Tables
 - **users (id, email, passwordHash, settings)**  
 - **transactions (id, userID, date, amount, category, merchant)**  
@@ -259,30 +276,8 @@ We chose these guidelines because they are widely accepted industry standards, e
    - **Plan for Detecting the Problem**: Monitor query performance and server load.
    - **Mitigation**: Indexing, query optimization  
 
-4. **Team Coordination Issues**  
-   - **Likelihood**: Medium  
-   - **Impact**: Medium  
-   - **Evidence**: Remote team and different schedules, which may slow down debugging or feature development.
-   - **Steps to Reduce Likelihood/Impact**: Use Discord for real-time communication. Hold weekly progress meetings.
-   - **Plan for Detecting the Problem**: Track missed deadlines and delayed responses in GitHub.
-   - **Mitigation**: Clear communication  
-
-5. **Feature Integration Conflicts**  
-   - **Likelihood**: Medium  
-   - **Impact**: Medium  
-   - **Evidence**: Multiple developers are working on different components simultaneously, which increases the chances of merge conflicts, API mismatches, or integration bugs.
-   - **Steps to Reduce Likelihood/Impact**: Require thorough code reviews before merging to detect potential conflicts early.
-   - **Plan for Detecting the Problem**: Run automated integration tests after every merge to detect breakages.
-   - **Mitigation**: Use feature branches, thorough code reviews, automated integration testing  
-
 
 Since we submitted the Requirements document, we realized that combining different parts of the project might be harder than we first thought. This is because multiple people are working on different features at the same time. To help with this, we are focusing on better communication and doing regular tests to catch problems early. We are also making a clearer schedule to make sure everything fits together smoothly.
-
-### Project Schedule
-- Refer to "Timeline" inside the "Product Description"
-
-### Team Structure
-- Refer to "Team Members" at the top of the page
 
 ### Test Plan & Bug Tracking
 - **Unit Testing**: Jest for JavaScript, Mocha for Node.js.  
