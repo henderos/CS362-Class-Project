@@ -23,6 +23,16 @@ This project will help users manage and keep track of their personal finances, s
    ```bash
     cd personal\ finance\ analyzer/backend/
    ```
+   2. **Change into Correct Directory:** 
+   - While in the parent directory, run:
+   ```bash
+    cd personal\ finance\ analyzer/backend/
+   ```
+   - If that causes an error, run each line seperately:
+   ```bash
+    cd 'personal finance analyzer'
+    cd backend
+   ```
 
 3. **Install Dependencies:**  
    - While in the back-end directory, run:
