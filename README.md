@@ -2,12 +2,12 @@
 
 ### <ins>Project Title</ins>
 
-**Personal Finance Analyzer**
+**Dam Dollars**
 
 
 ### <ins>Abstract</ins>
 
-Personal Finance Analyzer is a web application designed to simplify financial management for users, providing tools to track spending and manage subscriptions. With an intuitive user interface and analytics, it aims to empower users to make informed financial decisions effortlessly.
+Dam Dollars is a web-based personal finance platform designed to help users simplify and optimize their money management. It offers tools for budget-setting, subscription tracking, and real-time financial analytics, consolidating all banking data into one intuitive dashboard. By centralizing financial details from multiple accounts and providing advanced features without a paywall, Dam Dollars removes the hassle of manual tracking and helps users make informed spending and saving decisions. Moreover, it emphasizes user-friendly interfaces and actionable insights, aiming to motivate people to establish healthy financial habits. In essence, Dam Dollars acts as a one-stop solution for individuals seeking better control of their financial well-being.
 
 
 ### <ins>Goal</ins>

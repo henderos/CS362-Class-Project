@@ -14,17 +14,17 @@ https://github.com/henderos/CS362-Class-Project
 
 ### <ins>Communication Method</ins>
 
-Our main form of communication will be Discord, where we will establish clear threads for tasks, announcements, and questions. We will try to respond within 17 hours of a message on Discord. If no one responds, then politely give a reminder.
+Our primary communication platform is Discord, which we use to create dedicated threads for tasks, announcements, and general Q&A. Team members strive to respond within 17 hours to keep collaboration efficient and transparent. If a question remains unanswered, a polite reminder is posted to prompt further discussion. We also hold weekly check-ins via voice calls to review progress and address any technical or scheduling issues. This structured communication framework helps us tackle problems early and maintain a consistent development pace.
 
 ## Product description
 
 ### <ins>Project Title</ins>
 
-**Personal Finance Analyzer**
+**Dam Dollars**
 
 ### <ins>Abstract</ins>
 
-Personal Finance Analyzer is a web application designed to simplify financial management for users, providing tools to track spending and manage subscriptions. With an intuitive user interface and analytics, it aims to empower users to make informed financial decisions effortlessly.
+Dam Dollars is a web-based personal finance platform designed to help users simplify and optimize their money management. It offers tools for budget-setting, subscription tracking, and real-time financial analytics, consolidating all banking data into one intuitive dashboard. By centralizing financial details from multiple accounts and providing advanced features without a paywall, Dam Dollars removes the hassle of manual tracking and helps users make informed spending and saving decisions. Moreover, it emphasizes user-friendly interfaces and actionable insights, aiming to motivate people to establish healthy financial habits. In essence, Dam Dollars acts as a one-stop solution for individuals seeking better control of their financial well-being.
 
 ### <ins>Goal</ins>
 
@@ -32,11 +32,11 @@ This project will help users to manage and keep track of their personal finances
 
 ### <ins>Current Practice</ins>
 
-Today, people commonly use spreadsheets, individual banking apps, or third-party apps to track their finances. These methods are often not automated, or if you have accounts in different banks, then you have to individually log into each bank’s account. The features that we will implement are also commonly locked behind some sort of paywall. With our web app, you will be able to link every account so that you can see everything in one spot with advanced features such as subscription tracking or personalized savings advice.
+In today’s personal finance landscape, many individuals rely on spreadsheets, disjointed banking apps, or expensive third-party tools to track their money. These methods often require significant manual effort, from entering transactions to juggling multiple logins for different bank accounts, which increases the likelihood of errors. Furthermore, features such as advanced budgeting and subscription tracking are commonly locked behind paywalls, preventing widespread access. The lack of automation in these tools leaves users without a centralized, real-time snapshot of their overall spending, leading to frustration and missed opportunities for better budgeting. By contrast, Dam Dollars aims to eliminate these obstacles through a unified platform that automates transaction monitoring and provides all essential financial insights in one place.
 
 ### <ins>Novelty</ins>
 
-Our finance manager will not only allow users to see their finances but also will tell users where certain “problem areas” may be, allowing them to see where they are likely able to improve.
+Most personal finance tools provide basic account tracking but still require users to jump between multiple apps for a complete overview, often charging extra for more sophisticated features. Dam Dollars bridges this gap by consolidating accounts, budgets, and subscriptions into a single platform while offering real-time spending insights—without locking key capabilities behind a paywall. Unlike existing solutions, which frequently rely on extensive manual input or premium tiers, Dam Dollars focuses on quickly identifying overlooked subscriptions and “problem areas” (e.g., high spending in specific categories) so users can take timely corrective action. This tailored approach emphasizes convenience and affordability, creating a unique blend of everyday usability and proactive guidance that stands apart from the fragmented, costly offerings many people encounter today.
 
 ### <ins>Effects</ins>
 
@@ -106,14 +106,13 @@ System categorizes these transactions and flags underused subscriptions. User re
 
 ### <ins>Technical Approach</ins>
 
-Refer to "Major Software Components"
-
-### <ins>Risks</ins>
-
-Refer to "Risk Assessment" inside the "Process Description"
+Dam Dollars is designed as a unified web platform that securely centralizes all the key functions of personal finance management. At a high level, users create an account, link their financial institutions through a secure integration (e.g., Plaid API), and immediately gain a consolidated view of their finances. This consolidated data is stored in a MySQL database, where it is organized to support quick lookups, subscription tracking, and budgeting analytics. A Node.js/Express server handles the main business logic—managing user authentication, fetching and normalizing transaction data, and processing rules for features like budget alerts and subscription identification.
+On the front end, the user interacts with a streamlined interface built using modern JavaScript, which guides them through setting up budgets, reviewing subscriptions, and viewing real-time spending insights. By consolidating data sources in one place and pairing them with automated notifications, Dam Dollars significantly reduces manual overhead and the need to switch between multiple tools.
 
 ### <ins>Major Features</ins>
 
+- **Account Creation**: User has the possiblilty of cretaing an account using a valid email address and a password.
+- **Financial Information**: Using Plaid, user can link different bank accounts to his Dam Dollars account easily, using banking credentials.
 - **Dashboard Overview**: Display consolidated financial data, including recent transactions, and monthly spending summaries.
 - **Subscription Tracking**: Identify and track recurring subscriptions, flagging underused services.
 - **Spending Categories**: Provide visual breakdowns of expenses by category (e.g., groceries, rent, entertainment).
@@ -186,27 +185,53 @@ The Personal Finance Analyzer is a web application designed to help users track 
 - All sensitive data will be encrypted.  
 
 ### Alternative Architectural Decisions  
-**Alternative 1: Using MongoDB Instead of MySQL**  
-- **Pros**: Easier to manage, built-in authentication.  
-- **Cons**: Complex queries can be slower, requires different indexing strategies.  
+While Dam Dollars employs a layered design with a relational database (MySQL) and a REST-based API, we also evaluated other architectural choices to determine the best fit for our goals, timeline, and team expertise. Below are three potential alternatives we considered:
 
-**Alternative 2: Using GraphQL Instead of REST**  
-- **Pros**: Flexible schema, better scalability for unstructured data.  
-- **Cons**: More complex implementation, potential over-fetching issues.  
+**Alternative 1: NoSQL Instead of Relational Databases**  
+- **Context**: A NoSQL database (e.g., MongoDB) could simplify storage of rapidly changing or varied data structures.
+- **Trade-Offs**: This flexibility might accelerate early development but can weaken strict data consistency—crucial in financial contexts where transactions and budgets must adhere to clear relational constraints. We ultimately chose MySQL for its robust integrity checks and well-defined relational schema.
+
+**Alternative 2: Using GraphQL Instead of RESTfil APIs**  
+- **Context**: GraphQL can reduce data over-fetching and empower clients to request precisely the data they need.
+- **Trade-Offs**: It generally requires more advanced server-side setup and a steeper learning curve for the team. Given our relatively straightforward endpoints and desire for a quicker initial build, REST offered simplicity and widespread familiarity without sacrificing essential functionality. 
+
+**Alternative 3: Microservices Instead of a Monolithic Structure**  
+- **Context**: Splitting features—such as subscription management, budgeting, and user profiles—into separate services can enhance scalability and fault tolerance.
+- **Trade-Offs**: A microservices approach demands more elaborate DevOps pipelines and communication strategies (e.g., message queues or service discovery). For our current scope and team size, a monolithic structure simplified development and testing. Should our user base or features expand significantly, transitioning to microservices remains a future option.
 
 ---
 
 ## Software Design
+Our software design focuses on creating a user-centric environment that is both intuitive to navigate and robust in handling financial data. Below is an overview of the key design considerations and structural elements that guide Dam Dollars.
 
-### Front-End
-- **Dashboard.js**: Displays financial summary.  
-- **Budget.js**: Allows users to set and adjust budgets.  
-- **Transactions.js**: Lists user transactions with filtering.  
+### User Interface Structure
+- **Entry Points**: Users begin at the sign-up or login pages, each designed for clarity and minimal friction. 
+- **Dashboard**: After authentication, users are presented with a consolidated overview of account balances, recent transactions, and quick links to key features like subscription management or budget creation. The dashboard uses prominent visual indicators (e.g., charts, alerts) to highlight spending trends.
+- **Budget Management**: A dedicated section allows users to create and modify budget limits across various categories (groceries, entertainment, etc.). Real-time alerts and progress bars offer immediate feedback on spending status.
+- **Suscription Management**: This area displays recurring charges across linked accounts. Users can review each subscription’s cost, frequency, and usage, making it easier to identify unnecessary or overlapping services.
 
-### Back-End
-- **server.js**: Initializes Express app.  
-- **transactions.js**: Handles transaction-related API calls.  
-- **plaidService.js**: Fetches data from Plaid.  
+### Data Flow
+- **Client-Side Interactions**: When a user performs an action (e.g., adding a budget, marking a subscription as canceled), the front end (built with modern JavaScript frameworks) sends a request to the server.
+- **Server-Side Processing**: The Node.js/Express server receives and validates these requests, executes relevant business logic (such as budget recalculations or subscription updates), and retrieves or updates data in the database.
+- **Database Layer**: MySQL houses user accounts, transaction records, and subscription details. By using relational constraints, the system ensures data consistency (e.g., a transaction must be linked to an existing user_id).
+- **Third-Party Integration**: Where supported, Dam Dollars connects to external APIs (e.g., Plaid) for secure retrieval of transaction data, which is then normalized and stored.
+
+### Database Schema
+- **Users**: Stores user profiles, authentication credentials (securely hashed), and any personalization settings (e.g., default currency or notification preferences).
+- **Accounts**: Lists bank or credit card accounts linked to each user, capturing details like account type and balance.
+- **Transactions**: Contains the timestamp, amount, merchant/category, and references the appropriate account_id and user_id.
+- **Budgets**: Tracks spending limits across different categories (e.g., groceries), along with timestamps to support monthly or custom budget cycles.
+- **Subscriptions**: Records recurring charges (e.g., Netflix, gym memberships) and frequency details, helping users spot underutilized services.
+- **Auxilary Tables**: May include categories or merchant lookups to assist with consistency and reporting.
+
+### Design Philosophy And Constraits
+- **Clarity Over Complexity**: Each page is organized around a primary user goal (e.g., reviewing budgets), minimizing clutter.
+- **Role-Based Access and Security**: While many features are end-user facing, administrative tools (like analyzing aggregated usage metrics) are restricted to authorized team members via role-based access control.
+- **Scalability and Felixibility**: If Dam Dollars needs to integrate with additional third-party providers or introduce new financial categories, the database schema can accommodate these expansions through well-defined relationships and table structures.
+
+### Adaptability for Future Features
+- **Modular UI**: Each major feature (budgets, subscriptions, reports) is a distinct component, allowing for straightforward updates or the addition of new modules (e.g., AI-driven financial advice) without overhauling existing code.
+- **Extendable Schema**: Extra fields or tables can be introduced as data needs grow, such as for more detailed transaction analytics or advanced forecasting features.
 
 ### Database Tables
 - **users (id, email, passwordHash, settings)**  
@@ -251,30 +276,8 @@ We chose these guidelines because they are widely accepted industry standards, e
    - **Plan for Detecting the Problem**: Monitor query performance and server load.
    - **Mitigation**: Indexing, query optimization  
 
-4. **Team Coordination Issues**  
-   - **Likelihood**: Medium  
-   - **Impact**: Medium  
-   - **Evidence**: Remote team and different schedules, which may slow down debugging or feature development.
-   - **Steps to Reduce Likelihood/Impact**: Use Discord for real-time communication. Hold weekly progress meetings.
-   - **Plan for Detecting the Problem**: Track missed deadlines and delayed responses in GitHub.
-   - **Mitigation**: Clear communication  
-
-5. **Feature Integration Conflicts**  
-   - **Likelihood**: Medium  
-   - **Impact**: Medium  
-   - **Evidence**: Multiple developers are working on different components simultaneously, which increases the chances of merge conflicts, API mismatches, or integration bugs.
-   - **Steps to Reduce Likelihood/Impact**: Require thorough code reviews before merging to detect potential conflicts early.
-   - **Plan for Detecting the Problem**: Run automated integration tests after every merge to detect breakages.
-   - **Mitigation**: Use feature branches, thorough code reviews, automated integration testing  
-
 
 Since we submitted the Requirements document, we realized that combining different parts of the project might be harder than we first thought. This is because multiple people are working on different features at the same time. To help with this, we are focusing on better communication and doing regular tests to catch problems early. We are also making a clearer schedule to make sure everything fits together smoothly.
-
-### Project Schedule
-- Refer to "Timeline" inside the "Product Description"
-
-### Team Structure
-- Refer to "Team Members" at the top of the page
 
 ### Test Plan & Bug Tracking
 - **Unit Testing**: Jest for JavaScript, Mocha for Node.js.  
