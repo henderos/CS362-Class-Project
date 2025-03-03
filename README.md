@@ -56,3 +56,104 @@ This project will help users manage and keep track of their personal finances, s
 ## Layout
 Weekly reports are located in the `reports/` directory in files with the format `YYYYMMDD.md`.
 
+## Operational Use Cases
+
+### Use Case 1: Subscription Tracking
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User navigates to the “Subscriptions” section of the app.
+
+**Preconditions:**
+- User has linked financial accounts.
+- Transaction data is available.
+
+**Postconditions:**
+- The system identifies recurring transactions and displays them as subscriptions.
+
+**List of Steps:**
+1. User selects the “Subscriptions” tab.
+2. System retrieves recurring transactions from the linked accounts.
+3. System categorizes these transactions and flags underused subscriptions.
+4. User reviews and optionally adjusts subscription tracking preferences.
+
+**Exceptions:**
+- Errors in identifying recurring transactions.
+- Incomplete transaction data.
+
+### Use Case 2: Budget Setting
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User navigates to the “Budgeting Tool” section of the app.
+
+**Preconditions:**
+- User has linked financial accounts.
+- User has access to spending categories.
+
+**Postconditions:**
+- The system stores the user’s budget for each selected category.
+
+**List of Steps:**
+1. User selects the “Budgeting Tool.”
+2. User selects a spending category.
+3. User enters budget amount.
+
+**Extensions/Variations:**
+- Applicable when the user is editing an existing budget.
+
+**Exceptions:**
+- If the budget amount is too small or too large.
+
+### Use Case 3: Viewing Financial Data
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User logs into the app.
+
+**Preconditions:**
+- User has linked financial accounts.
+
+**Postconditions:**
+- The user sees an overview of recent transactions, monthly spending, and account balances.
+
+**List of Steps:**
+1. User logs in.
+2. System retrieves financial data.
+3. Dashboard displays financial information.
+
+**Exceptions:**
+- If the system can’t connect to the bank account.
+
+### Use Case 4: Generating Spending Reports
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User selects “Generate Spending Report” on the app.
+
+**Preconditions:**
+- User has linked financial accounts.
+- Financial data is available for the selected time period.
+
+**Postconditions:**
+- The system processes and generates a spending report for the selected time period.
+
+**List of Steps:**
+1. User selects “Generate Spending Report.”
+2. User selects a time period for the report.
+3. System processes and generates the spending report.
+
+**Extensions/Variations:**
+- User may want to export the report in a different file type.
+
+**Exceptions:**
+- Insufficient data for the selected time period.
+
