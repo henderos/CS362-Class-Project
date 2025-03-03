@@ -18,3 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "login.html";
     }
 });
+
+function logoutUser() {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
+    alert("You have been logged out.");
+    window.location.href = "login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.querySelector(".btn-logout");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", logoutUser);
+    }
+});
+  
