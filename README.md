@@ -51,6 +51,13 @@ This project will help users manage and keep track of their personal finances, s
    ```
    http://localhost:5000
    ```
+3. **(IMPORTANT) Test Account** 
+   When testing out the app, use a test account for the login, as to not expose your own financial data.
+   ```bash
+   Username: test@gmail.com
+   Password: test
+   ```
+
 
 ## Trello Link
 [Trello Link](https://trello.com/invite/b/67859826cb1dd2f0bc0c0b1b/ATTI0b79cc2d74ed979d249e446c0995660497642802/pt14personal-finance-analyzer)
