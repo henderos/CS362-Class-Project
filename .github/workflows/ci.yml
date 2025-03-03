@@ -42,6 +42,10 @@ jobs:
       - name: Install dependencies
         working-directory: 'personal finance analyzer/backend'
         run: npm install
-      - name: Run tests
+      - name: Run backend tests
         working-directory: 'personal finance analyzer/backend'
-        run: npm test
+        run: npm run test:backend
+      - name: Run frontend tests
+        working-directory: 'personal finance analyzer/backend'
+        run: npm run test:frontend
+
