@@ -3,7 +3,6 @@ const chaiHttp = require("chai-http");
 const app = require("../server"); // Adjust path if necessary
 const db = require("../src/config/db");
 
-
 chai.use(chaiHttp);
 const { expect } = chai;
 
@@ -12,12 +11,12 @@ describe("Budgets API Tests", () => {
   let budgetId;
 
   before(async () => {
-    // clean up the test data before tests
+    // Clean up test data before tests
     await db.query("DELETE FROM budgets WHERE user_id = ?", [testUserId]);
   });
 
   after(async () => {
-    // clean up test data after tests
+    // Clean up test data after tests
     await db.query("DELETE FROM budgets WHERE user_id = ?", [testUserId]);
   });
 
@@ -44,6 +43,7 @@ describe("Budgets API Tests", () => {
       .send({
         user_id: testUserId,
         category: "Groceries",
+        // Missing budget_amount
       })
       .end((err, res) => {
         expect(res).to.have.status(400);
@@ -58,7 +58,11 @@ describe("Budgets API Tests", () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an("array");
-        expect(res.body[0]).to.have.property("user_id", testUserId);
+        // The GET endpoint returns only category and budget_amount.
+        const budget = res.body.find(b => b.category === "Groceries");
+        expect(budget).to.exist;
+        // If your database returns a string (e.g., "100.00"), adjust the expectation accordingly.
+        expect(budget).to.have.property("budget_amount").that.satisfies(val => Number(val) === 100);
         done();
       });
   });
@@ -79,7 +83,7 @@ describe("Budgets API Tests", () => {
   it("should not update a budget amount if missing field", (done) => {
     chai.request(app)
       .put(`/api/budgets/${budgetId}`)
-      .send({})
+      .send({})  // Missing budget_amount field
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body).to.have.property("error", "Budget amount is required");
@@ -88,17 +92,19 @@ describe("Budgets API Tests", () => {
   });
 
   it("should delete a budget", (done) => {
+    // Since the DELETE endpoint requires both user_id and category, we call:
     chai.request(app)
-      .delete(`/api/budgets/${budgetId}`)
+      .delete(`/api/budgets/${testUserId}/Groceries`)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body).to.have.property("message", "Budget deleted successfully");
+        // Note: the router responds with an exclamation at the end.
+        expect(res.body).to.have.property("message", "Budget deleted successfully!");
         done();
       });
   });
 
   it("should track spending against budgets", (done) => {
-    // Insert a new budget first for test tracking
+    // Insert a new budget first for test tracking.
     db.query("INSERT INTO budgets (user_id, category, budget_amount) VALUES (?, ?, ?)", [testUserId, "TestCategory", 200])
       .then(() => {
         chai.request(app)
@@ -106,18 +112,17 @@ describe("Budgets API Tests", () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.an("array");
-            // Find the newly inserted budget in the response
+            // Find the newly inserted budget in the response.
             const budget = res.body.find(b => b.category === "TestCategory");
             expect(budget).to.exist;
             expect(budget).to.have.property("category", "TestCategory");
-            expect(budget).to.have.property("budget_amount", "200.00");
+            // Adjust for number or formatted string as needed.
+            expect(budget).to.have.property("budget_amount").that.satisfies(val => Number(val) === 200);
             expect(budget).to.have.property("spent_amount", 0);
-            expect(budget).to.have.property("remaining_budget", "200.00");
+            expect(budget).to.have.property("remaining_budget").that.satisfies(val => Number(val) === 200);
             done();
           });
       })
       .catch(err => done(err));
-    });
-
-  
+  });
 });
