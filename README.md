@@ -12,6 +12,7 @@ This project will help users manage and keep track of their personal finances, s
 ## Build and Test Instructions
 
 1. **Clone the Repository:**  
+   - If you know how, you can use Github Desktop to clone the repository straight from the Github link. If not, you can open a bash terminal and type:
    ```bash
    git clone <repository-url>
    cd <repository-directory>
@@ -21,6 +22,11 @@ This project will help users manage and keep track of their personal finances, s
    - While in the parent directory, run:
    ```bash
     cd personal\ finance\ analyzer/backend/
+   ```
+   - If that causes an error, run each line seperately:
+   ```bash
+    cd 'personal finance analyzer'
+    cd backend
    ```
 
 3. **Install Dependencies:**  
@@ -34,6 +40,8 @@ This project will help users manage and keep track of their personal finances, s
    ```bash
    npm test
    ```
+   After seeing the test results, quit the testing by doing "CTRL + C" on your keyboard
+
    Otherwise, manually test the system locally by verifying that each functionality (login, linking bank accounts, budgeting, spending reports, and dahsboard) works as expected.
 
 
@@ -49,6 +57,14 @@ This project will help users manage and keep track of their personal finances, s
    ```
    http://localhost:5000
    ```
+3. **(IMPORTANT) Test Account** 
+   When testing out the app, use a test account for the login, as to not expose your own financial data.
+   ```bash
+   Username: test@gmail.com
+   Password: test
+   ```
+
+
 
 ## Trello Link
 [Trello Link](https://trello.com/invite/b/67859826cb1dd2f0bc0c0b1b/ATTI0b79cc2d74ed979d249e446c0995660497642802/pt14personal-finance-analyzer)
@@ -156,4 +172,35 @@ Weekly reports are located in the `reports/` directory in files with the format 
 
 **Exceptions:**
 - Insufficient data for the selected time period.
+
+### Use Case 5: User Login/Logout
+**Actors:**
+- User
+- System
+
+**Triggers:**
+- User selects the “Login” or “Logout” option within the app.
+
+**Preconditions:**
+- **Login:** The user has an active account and valid credentials.
+- **Logout:** The user is currently logged in.
+
+**Postconditions:**
+- **Login:** The user is successfully authenticated and gains access to the system.
+- **Logout:** The user is securely logged out, and the session is terminated.
+
+#### Login Process:
+1. User navigates to the login page.
+2. User enters valid credentials (username and password).
+3. System validates the credentials.
+4. System establishes a session and redirects the user to the dashboard.
+
+#### Logout Process:
+1. User clicks the logout button.
+2. System terminates the user session.
+3. User is redirected to the login or home page.
+
+**Exceptions:**
+- **Login:** Incorrect credentials or account locked.
+- **Logout:** Session timeout or network issues causing an incomplete logout.
 
