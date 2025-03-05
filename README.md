@@ -50,7 +50,7 @@ This project will help users manage and keep track of their personal finances, s
 1. **Start the Server:**  
    Run the following command from the backend directory:
    ```bash
-   npm start
+   node server.js
    ```
 2. **Access the Application:**  
    Open your browser and navigate to:
