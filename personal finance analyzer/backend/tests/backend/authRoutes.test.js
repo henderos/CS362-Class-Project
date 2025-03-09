@@ -45,7 +45,7 @@ describe("Auth API Tests", () => {
       })
       .end((err, res) => {
         if (err) return done(err);
-        expect(res).to.have.status(500);
+        expect(res).to.have.status(400);
         expect(res.body).to.have.property("error");
         done();
       });
