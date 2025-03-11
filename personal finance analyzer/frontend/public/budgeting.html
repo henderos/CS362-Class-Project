@@ -116,7 +116,7 @@
       console.log("Submitting Budget:", { userID, category, budget_amount }); // Debugging
 
       try {
-        const response = await fetch("http://localhost:5000/api/budgets", {
+        const response = await fetch("http://classwork.engr.oregonstate.edu:5000/api/budgets", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -149,7 +149,7 @@
       try {
         console.log(`Fetching budgets for user ID: ${userID}`); // Debugging
 
-        const response = await fetch(`http://localhost:5000/api/budgets/${userID}`, {
+        const response = await fetch(`http://classwork.engr.oregonstate.edu:5000/api/budgets/${userID}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -185,7 +185,7 @@
       if (!token || !userID) return;
 
       try {
-        const response = await fetch(`http://localhost:5000/api/budgets/${userID}/${category}`, {
+        const response = await fetch(`http://classwork.engr.oregonstate.edu:5000/api/budgets/${userID}/${category}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`

@@ -83,7 +83,7 @@
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/api/plaid/check_account/${user_id}`);
+            const response = await fetch(`http://classwork.engr.oregonstate.edu:5000//api/plaid/check_account/${user_id}`);
             const data = await response.json();
 
             if (data.hasLinkedAccount) {
@@ -102,7 +102,7 @@
 
     async function createLinkToken() {
         try {
-            const response = await fetch("http://localhost:5000/api/plaid/create_link_token");
+            const response = await fetch("http://classwork.engr.oregonstate.edu:5000/api/plaid/create_link_token");
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();
@@ -124,7 +124,7 @@
         const handler = Plaid.create({
             token: linkToken,
             onSuccess: async function(public_token) {
-                const response = await fetch("http://localhost:5000/api/plaid/exchange_public_token", { 
+                const response = await fetch("http://classwork.engr.oregonstate.edu:5000/api/plaid/exchange_public_token", { 
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ public_token, user_id })

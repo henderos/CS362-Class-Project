@@ -94,7 +94,7 @@
         }
 
         // Fetch transactions and account balances
-        const response = await fetch(`http://localhost:5000/api/plaid/user_transactions/${user_id}`);
+        const response = await fetch(`http://classwork.engr.oregonstate.edu:5000/api/plaid/user_transactions/${user_id}`);
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
@@ -112,7 +112,7 @@
             : "No linked accounts.";
 
         // Fetch financial overview (monthly spending)
-        const financeResponse = await fetch(`http://localhost:5000/api/financial-data?user_id=${user_id}`);
+        const financeResponse = await fetch(`http://classwork.engr.oregonstate.edu:5000/api/financial-data?user_id=${user_id}`);
         if (!financeResponse.ok) throw new Error('Failed to fetch financial data');
 
         const financeData = await financeResponse.json();

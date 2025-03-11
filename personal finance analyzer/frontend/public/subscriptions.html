@@ -73,7 +73,7 @@
         }
 
         // Fetch recurring transactions from your endpoint
-        const response = await fetch('http://localhost:5000/api/subscriptions', {
+        const response = await fetch('http://classwork.engr.oregonstate.edu:5000/api/subscriptions', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error('Failed to fetch subscriptions');
