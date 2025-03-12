@@ -453,3 +453,17 @@ We have chosen **GitHub Actions** as our CI service.
 - **On Push**: Runs the full test suite whenever code is pushed to the `main` branch.
 - **On Pull Request**: Runs the test suite before merging PRs to ensure stability.
 - **Scheduled Runs**: (Future Implementation) Nightly builds to detect regressions.
+
+
+### Reflections
+
+- **America**: 
+
+- **Bailey**: Three things I learned from this project experience were effective planning, collaboration, and execution strategies. Effective planning, especially in defining clear requirements and timelines to avoid delays. Teaming and collaboration played a big role in our success, as strong communication helped resolve challenges quickly. If we were to do this again, we would improve execution strategies by incorporating more automated testing and structured development cycles.
+
+- **Brian**: 
+
+- **Bryan**: 
+
+- **Ross**: 
+
