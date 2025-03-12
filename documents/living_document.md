@@ -461,9 +461,11 @@ We have chosen **GitHub Actions** as our CI service.
 
 - **Bailey**: Three things I learned from this project experience were effective planning, collaboration, and execution strategies. Effective planning, especially in defining clear requirements and timelines to avoid delays. Teaming and collaboration played a big role in our success, as strong communication helped resolve challenges quickly. If we were to do this again, we would improve execution strategies by incorporating more automated testing and structured development cycles.
 
-- **Brian**: 
+- **Brian**: I learned about the importance of collaboration and clear communication, as working with others effectively and exchanging ideas made the processes more efficient. I also learned that breaking down a project into smaller, manageable parts helps prevent overwhelming and makes the project easier to work on. Organization was also a key component to the project as keeping the project well structured allowed for a clearer workflow and easier troubleshooting.
 
-- **Bryan**: 
+- **Bryan**: One important thing I learned from this project is how crucial it is to set a clear plan and collaborate in establishing due dates for each small part of the work. Without a structured plan and defined milestones, the workload can become uneven, leading to some weeks being overwhelming while others are lighter. By working in an organized manner from the beginning, we could have distributed the workload more evenly, preventing a last-minute rush to meet the requirements. Establishing clear deadlines early on would have helped us stay on track and reduce unnecessary stress toward the end of the project. 
 
-- **Ross**: 
+- **Ross**: The Importance of Clear Requirements – Initially, our requirements were not well-defined, which led to misunderstandings and rework. Spending more time upfront refining and clarifying requirements would have saved us effort later.
+Effective Communication in a Team – Throughout the project, I saw how important it is to keep everyone on the same page. There were times when we assumed others understood our approach or their required tasks, only to realize later that we had different expectations. Having more regular check-ins could have made a big difference.
+Adapting to Unexpected Challenges – We faced unexpected issues, such as integration problems and environment dependencies. At first, these were frustrating, but I learned that flexibility and a problem-solving mindset are crucial. Breaking problems down into smaller steps and seeking help early helped us move forward efficiently.
 
