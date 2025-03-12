@@ -25,7 +25,7 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     env:
-      DB_HOST: 127.0.0.1
+      DB_HOST: mysql
       DB_USER: testuser
       DB_PASSWORD: testpass
       DB_NAME: testdb
